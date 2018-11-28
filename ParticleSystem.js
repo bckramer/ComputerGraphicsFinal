@@ -9,6 +9,13 @@ const NEAR = 0.1;
 const FAR = 10000;
 var objects = [];
 
+var compactability = document.getElementById("compactability").value;
+var lifetime = document.getElementById("lifetime").value;
+var size = document.getElementById("size").value;
+var speed = document.getElementById("speed").value;
+var startColor = document.getElementById("startColor").value;
+var endColor = document.getElementById("endColor").value;
+
 // Get the DOM element to attach to
 const container =
     document.querySelector('#container');
@@ -60,10 +67,7 @@ const RADIUS = 10;
 const SEGMENTS = 16;
 const RINGS = 16;
 
-// Create a new mesh with
-// sphere geometry - we will cover
-// the sphereMaterial next!
-const sphere = new THREE.Mesh(
+const user = new THREE.Mesh(
     new THREE.SphereGeometry(
         RADIUS,
         SEGMENTS,
@@ -71,10 +75,40 @@ const sphere = new THREE.Mesh(
 
     sphereMaterial);
 
-// Move the Sphere back in Z so we
-// can see it.
-sphere.position.z = -300;
-scene.add(sphere);
+user.position.z = -300;
+scene.add(user);
+
+
+var xSpeed = 3.0;
+var ySpeed = 3.0;
+var zSpeed = 3.0;
+
+document.addEventListener("keydown", onDocumentKeyDown, false);
+function onDocumentKeyDown(event) {
+    var keyCode = event.which;
+    if (keyCode == 87) {
+        //w
+        user.position.z -= zSpeed;
+    } else if (keyCode == 83) {
+        //s
+        user.position.z += zSpeed;
+    } else if (keyCode == 65) {
+        //a
+        user.position.x -= xSpeed;
+    } else if (keyCode == 68) {
+        //d
+        user.position.x += xSpeed;
+    } else if (keyCode == 82) {
+        //r
+        user.position.y += ySpeed;
+    } else if (keyCode == 70) {
+        //f
+        user.position.y -= ySpeed;
+    } else if (keyCode == 32) {
+        //space
+        user.position.set(0, 0, 0);
+    }
+};
 
 //    var particleCount = 1800,
 //        particles = new THREE.Geometry(),
@@ -112,31 +146,25 @@ for (var i = 0; i < 500; i++) {
             RINGS),
 
         sphereMaterial);
-    newSphere.position.x = sphere.position.x + Math.random() * 20 - 10;
-    newSphere.position.y = sphere.position.y + Math.random() * 200;
-    newSphere.position.z = -300;
+    newSphere.position.x = user.position.x + Math.random() * 20 - 10;
+    newSphere.position.y = user.position.y + Math.random() * 200;
+    newSphere.position.z = user.position.z + Math.random() * 20 - 10;
     objects.push(newSphere);
     scene.add(newSphere);
 }
 
-
-// Finally, add the sphere to the scene.
-//scene.add(sphere);
-
 function update() {
-    // Draw!
     renderer.render(scene, camera);
-    //sphere.position.x = sphere.position.x + 0.01;
     for (var i = 0; i < objects.length; i++) {
         //    objects[i].position.x = Math.random() * 250 - 175;
         if (objects[i].position.y > 200) {
-            objects[i].position.y = 0;
+            objects[i].position.x = user.position.x + Math.random() * 20 - 10;
+            objects[i].position.y = user.position.y;
+            objects[i].position.z = user.position.z + Math.random() * 20 - 10;
         } else {
-            objects[i].position.y = objects[i].position.y + 1.0;
+            objects[i].position.y = objects[i].position.y + 0.3;
         }
-        //    objects[i].position.z = Math.random() * 250 - 175;
     }
-    // Schedule the next frame.
     requestAnimationFrame(update);
 }
 
