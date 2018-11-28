@@ -139,23 +139,28 @@ function onDocumentKeyDown(event) {
 //    scene.add(particleSystem);
 
 for (var i = 0; i < 500; i++) {
-    let newParticle = new ParticleObject(
-        1.0,
-        0.0,
-        new Vector3([0, 0, 0])
-    );
-    let newSphere = new THREE.Mesh(
+
+    let particleMesh = new THREE.Mesh(
         new THREE.SphereGeometry(
             2,
             SEGMENTS,
             RINGS),
 
         sphereMaterial);
-    newSphere.position.x = user.position.x + Math.random() * 20 - 10;
-    newSphere.position.y = user.position.y + Math.random() * 200;
-    newSphere.position.z = user.position.z + Math.random() * 20 - 10;
-    objects.push(newSphere);
-    scene.add(newSphere);
+
+    particleMesh.position.x = user.position.x + Math.random() * 20 - 10;
+    particleMesh.position.y = user.position.y + Math.random() * 200;
+    particleMesh.position.z = user.position.z + Math.random() * 20 - 10;
+
+    objects.push(particleMesh);
+    scene.add(particleMesh);
+
+    let newParticle = new ParticleObject(
+        particleMesh,
+        1.0,
+        0.0,
+        new Vector3([0, 0, 0])
+    );
 }
 
 function update() {
