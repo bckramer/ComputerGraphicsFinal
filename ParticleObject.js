@@ -1,7 +1,7 @@
-var Particle = function(lifetime, speed, direction)
+var ParticleObject = function(lifetime, speed, direction)
 {
     // Sphere mesh
-    let newSphere = new THREE.Mesh(
+    let mesh = new THREE.Mesh(
         new THREE.SphereGeometry(
             2,
             SEGMENTS,
@@ -17,4 +17,24 @@ var Particle = function(lifetime, speed, direction)
 
     // Direction of object
     this.direction = new Vector3([0, 0, 0]);
+};
+
+ParticleObject.prototype.getMesh = function()
+{
+    return this.mesh;
+};
+
+ParticleObject.prototype.getLifetime = function()
+{
+    return this.lifetime;
+};
+
+ParticleObject.prototype.getSpeed = function()
+{
+    return this.speed;
+};
+
+ParticleObject.prototype.getDirection = function()
+{
+    return this.direction;
 };
