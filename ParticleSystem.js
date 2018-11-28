@@ -139,6 +139,11 @@ function onDocumentKeyDown(event) {
 //    scene.add(particleSystem);
 
 for (var i = 0; i < 500; i++) {
+    let newParticle = new ParticleObject(
+        1.0,
+        0.0,
+        new Vector3([0, 0, 0])
+    );
     let newSphere = new THREE.Mesh(
         new THREE.SphereGeometry(
             2,
