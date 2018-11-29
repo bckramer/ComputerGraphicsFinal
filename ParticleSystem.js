@@ -7,6 +7,7 @@ const VIEW_ANGLE = 45;
 const ASPECT = WIDTH / HEIGHT;
 const NEAR = 0.1;
 const FAR = 10000;
+const numParticles = 1000;
 var objects = [];
 
 var compactability = document.getElementById("compactability").value;
@@ -57,9 +58,9 @@ scene.add(pointLight);
 
 // create the sphere's material
 const sphereMaterial =
-    new THREE.MeshLambertMaterial(
+    new THREE.MeshPhongMaterial(
         {
-            color: 0xCC0000
+            color: new THREE.Color(0xFF0000)
         });
 
 // Set up the sphere vars
@@ -138,22 +139,27 @@ function onDocumentKeyDown(event) {
 //
 //    scene.add(particleSystem);
 
-for (var i = 0; i < 500; i++) {
-
+for (var i = 0; i < numParticles; i++) {
+    let particleMaterial =
+        new THREE.MeshPhongMaterial(
+            {
+                color: new THREE.Color(0xFFFFFF)
+            });
     let particleMesh = new THREE.Mesh(
         new THREE.SphereGeometry(
-            2,
+            1.0,
             SEGMENTS,
             RINGS),
 
-        sphereMaterial);
+        particleMaterial);
+    particleMesh.position.x = user.position.x;
+    particleMesh.position.y = user.position.y;
+    particleMesh.position.z = user.position.z;
 
-    particleMesh.position.x = user.position.x + Math.random() * 20 - 10;
-    particleMesh.position.y = user.position.y + Math.random() * 200;
-    particleMesh.position.z = user.position.z + Math.random() * 20 - 10;
+    let particle = new ParticleObject(particleMesh, Math.random(), Math.random() * .5, new Vector3([1 - (2 * Math.random()), 1 - (2 *Math.random()), 1 - (2 * Math.random())]));
 
-    objects.push(particleMesh);
-    scene.add(particleMesh);
+    objects.push(particle);
+    scene.add(particle.mesh);
 
     let newParticle = new ParticleObject(
         particleMesh,
@@ -167,12 +173,20 @@ function update() {
     renderer.render(scene, camera);
     for (var i = 0; i < objects.length; i++) {
         //    objects[i].position.x = Math.random() * 250 - 175;
-        if (objects[i].position.y > 200) {
-            objects[i].position.x = user.position.x + Math.random() * 20 - 10;
-            objects[i].position.y = user.position.y;
-            objects[i].position.z = user.position.z + Math.random() * 20 - 10;
+        if (objects[i].lifetime < 0) {
+            objects[i].mesh.position.x = user.position.x + Math.random() * 20 - 10;
+            objects[i].mesh.position.y = user.position.y;
+            objects[i].mesh.position.z = user.position.z + Math.random() * 20 - 10;
+            objects[i].lifetime = Math.random();
+            objects[i].mesh.material.color = new THREE.Color(0xFFFFFF);
         } else {
-            objects[i].position.y = objects[i].position.y + 0.3;
+            objects[i].mesh.position.x =  objects[i].mesh.position.x + (objects[i].direction.elements[0] * objects[i].speed);
+            objects[i].mesh.position.y =  objects[i].mesh.position.y + (objects[i].direction.elements[1] * objects[i].speed);
+            objects[i].mesh.position.z =  objects[i].mesh.position.z + (objects[i].direction.elements[2] * objects[i].speed);
+            objects[i].mesh.material.color.r = objects[i].mesh.material.color.r - 0.005;
+            // objects[i].mesh.material.color.r = objects[i].mesh.material.color.g - 0.005;
+            // objects[i].mesh.material.color.r = objects[i].mesh.material.color.b - 0.005;
+            objects[i].lifetime = objects[i].lifetime - 0.01;
         }
     }
     requestAnimationFrame(update);
