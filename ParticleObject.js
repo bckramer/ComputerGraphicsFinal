@@ -1,7 +1,6 @@
 const lifeDecay = 0.01;
 
-var ParticleObject = function(mesh, lifetime, speed, acceleration, direction, startColor, endColor)
-{
+const ParticleObject = function (mesh, lifetime, speed, acceleration, direction, startColor, endColor) {
     // Sphere mesh
     this.mesh = mesh;
 

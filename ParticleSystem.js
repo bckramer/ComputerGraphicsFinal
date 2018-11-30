@@ -8,9 +8,9 @@ const ASPECT = WIDTH / HEIGHT;
 const NEAR = 0.1;
 const FAR = 10000;
 const numParticles = 1000;
-var startColor;
-var endColor;
-var objects = [];
+let startColor;
+let endColor;
+const objects = [];
 
 var spawnDensity = document.getElementById("spawnDensity").value;
 var lifetime = document.getElementById("lifetime").value;
@@ -45,29 +45,29 @@ var zSpeed = 3.0;
 document.addEventListener("keydown", onDocumentKeyDown, false);
 function onDocumentKeyDown(event) {
     var keyCode = event.which;
-    if (keyCode == 87) {
+    if (keyCode === 87) {
         //w
         user.position.z -= zSpeed;
-    } else if (keyCode == 83) {
+    } else if (keyCode === 83) {
         //s
         user.position.z += zSpeed;
-    } else if (keyCode == 65) {
+    } else if (keyCode === 65) {
         //a
         user.position.x -= xSpeed;
-    } else if (keyCode == 68) {
+    } else if (keyCode === 68) {
         //d
         user.position.x += xSpeed;
-    } else if (keyCode == 82) {
+    } else if (keyCode === 82) {
         //r
         user.position.y += ySpeed;
-    } else if (keyCode == 70) {
+    } else if (keyCode === 70) {
         //f
         user.position.y -= ySpeed;
-    } else if (keyCode == 32) {
+    } else if (keyCode === 32) {
         //space
         user.position.set(0, 0, 0);
     }
-};
+}
 
 // Get the DOM element to attach to
 const container =
@@ -131,7 +131,7 @@ const user = new THREE.Mesh(
 user.position.z = -300;
 scene.add(user);
 
-for (var i = 0; i < numParticles; i++) {
+for (let i = 0; i < numParticles; i++) {
 
     let particleMaterial =
         new THREE.MeshPhongMaterial(
@@ -175,12 +175,13 @@ for (var i = 0; i < numParticles; i++) {
 }
 
 function update() {
+
     updateTextBoxes();
     renderer.render(scene, camera);
 
-    var particle;
+    let particle;
 
-    for (var i = 0; i < objects.length; i++) {
+    for (let i = 0; i < objects.length; i++) {
 
         particle = objects[i];
 
