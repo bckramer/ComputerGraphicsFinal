@@ -159,6 +159,8 @@ for (let i = 0; i < numParticles; i++) {
         user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0)
     );
 
+    particleMesh.scale.setScalar(size);
+
     this.startColor = new THREE.Color(this.startColorR, this.startColorG, this.startColorB);
     this.endColor = new THREE.Color(this.endColorR, this.endColorG, this.endColorB);
 
@@ -195,6 +197,7 @@ function update() {
             let spawnY = user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
             let spawnZ = user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
             particle.setPosition(spawnX, spawnY, spawnZ);
+            particle.setSize(size);
             particle.setLifetime(this.lifetime);
             particle.resetColor();
             particle.setSpeed(this.speed);

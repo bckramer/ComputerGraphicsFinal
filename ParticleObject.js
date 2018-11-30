@@ -86,6 +86,11 @@ ParticleObject.prototype.setLifetime = function(lifetime)
     this.lifeLeft = lifetime;
 };
 
+ParticleObject.prototype.setSize = function(size)
+{
+    this.mesh.scale.setScalar(size);
+};
+
 ParticleObject.prototype.getSpeed = function()
 {
     return this.speed;
