@@ -151,9 +151,9 @@ for (var i = 0; i < numParticles; i++) {
 
         particleMaterial);
 
-    particleMesh.position.x = user.position.x + Math.random() * 20 - 10;
-    particleMesh.position.y = user.position.y + Math.random() * 20 - 10;
-    particleMesh.position.z = user.position.z + Math.random() * 20 - 10;
+    particleMesh.position.x = user.position.x + parseFloat(Math.random() * compactability - compactability / 2.0);
+    particleMesh.position.y = user.position.y + parseFloat(Math.random() * compactability - compactability / 2.0);
+    particleMesh.position.z = user.position.z + parseFloat(Math.random() * compactability - compactability / 2.0);
 
     this.startColor = new THREE.Color(this.startColorR, this.startColorG, this.startColorB);
     this.endColor = new THREE.Color(this.endColorR, this.endColorG, this.endColorB);
@@ -177,23 +177,29 @@ for (var i = 0; i < numParticles; i++) {
 function update() {
     updateTextBoxes();
     renderer.render(scene, camera);
+
+    var particle;
+
     for (var i = 0; i < objects.length; i++) {
+
+        particle = objects[i];
+
         //    objects[i].position.x = Math.random() * 250 - 175;
-        if (objects[i].lifetime < 0) {
-            let spawnX = user.position.x + Math.random() * 20 - 10;
-            let spawnY = user.position.y;
-            let spawnZ = user.position.z + Math.random() * 20 - 10;
-            objects[i].setPosition(spawnX, spawnY, spawnZ);
-            objects[i].lifetime = this.lifetime;
-            objects[i].resetColor();
-            objects[i].speed = this.speed;
-            objects[i].acceleration = this.acceleration;
+        if (particle.getLifetime() < 0) {
+            let spawnX = user.position.x + parseFloat(Math.random() * compactability - compactability / 2.0);
+            let spawnY = user.position.y + parseFloat(Math.random() * compactability - compactability / 2.0);
+            let spawnZ = user.position.z + parseFloat(Math.random() * compactability - compactability / 2.0);
+            particle.setPosition(spawnX, spawnY, spawnZ);
+            particle.setLifetime(this.lifetime);
+            particle.resetColor();
+            particle.setSpeed(this.speed);
+            particle.setAcceleration(this.acceleration);
         } else {
-            objects[i].updatePosition();
-            objects[i].updateLifeTime();
-            objects[i].adjustSpeedByAcceleration();
-            objects[i].updateColor();
-            objects[i].swapColor(this.startColor, this.endColor);
+            particle.updatePosition();
+            particle.updateLifeTime();
+            particle.adjustSpeedByAcceleration();
+            particle.updateColor();
+            particle.swapColor(this.startColor, this.endColor);
         }
     }
     requestAnimationFrame(update);

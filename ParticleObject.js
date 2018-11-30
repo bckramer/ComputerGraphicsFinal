@@ -71,9 +71,29 @@ ParticleObject.prototype.getLifetime = function()
     return this.lifetime;
 };
 
+ParticleObject.prototype.setLifetime = function(lifetime)
+{
+    this.lifetime = lifetime;
+};
+
 ParticleObject.prototype.getSpeed = function()
 {
     return this.speed;
+};
+
+ParticleObject.prototype.setSpeed = function(speed)
+{
+    this.speed = speed;
+};
+
+ParticleObject.prototype.getAcceleration = function()
+{
+    return this.acceleration;
+};
+
+ParticleObject.prototype.setAcceleration = function(acceleration)
+{
+    this.acceleration = acceleration;
 };
 
 ParticleObject.prototype.getDirection = function()
