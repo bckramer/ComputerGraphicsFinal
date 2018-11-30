@@ -12,7 +12,7 @@ var startColor;
 var endColor;
 var objects = [];
 
-var compactability = document.getElementById("compactability").value;
+var spawnDensity = document.getElementById("spawnDensity").value;
 var lifetime = document.getElementById("lifetime").value;
 var size = document.getElementById("size").value;
 var speed = document.getElementById("speed").value;
@@ -25,7 +25,7 @@ var endColorG = document.getElementById("endColorG").value;
 var endColorB = document.getElementById("endColorB").value;
 
 function updateTextBoxes() {
-    this.compactability = document.getElementById("compactability").value;
+    this.spawnDensity = document.getElementById("spawnDensity").value;
     this.lifetime = document.getElementById("lifetime").value;
     this.size = document.getElementById("size").value;
     this.speed = document.getElementById("speed").value;
@@ -151,9 +151,9 @@ for (var i = 0; i < numParticles; i++) {
 
         particleMaterial);
 
-    particleMesh.position.x = user.position.x + parseFloat(Math.random() * compactability - compactability / 2.0);
-    particleMesh.position.y = user.position.y + parseFloat(Math.random() * compactability - compactability / 2.0);
-    particleMesh.position.z = user.position.z + parseFloat(Math.random() * compactability - compactability / 2.0);
+    particleMesh.position.x = user.position.x + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
+    particleMesh.position.y = user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
+    particleMesh.position.z = user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
 
     this.startColor = new THREE.Color(this.startColorR, this.startColorG, this.startColorB);
     this.endColor = new THREE.Color(this.endColorR, this.endColorG, this.endColorB);
@@ -186,9 +186,9 @@ function update() {
 
         //    objects[i].position.x = Math.random() * 250 - 175;
         if (particle.getLifetime() < 0) {
-            let spawnX = user.position.x + parseFloat(Math.random() * compactability - compactability / 2.0);
-            let spawnY = user.position.y + parseFloat(Math.random() * compactability - compactability / 2.0);
-            let spawnZ = user.position.z + parseFloat(Math.random() * compactability - compactability / 2.0);
+            let spawnX = user.position.x + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
+            let spawnY = user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
+            let spawnZ = user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
             particle.setPosition(spawnX, spawnY, spawnZ);
             particle.setLifetime(this.lifetime);
             particle.resetColor();
