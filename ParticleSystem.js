@@ -194,12 +194,9 @@ function update() {
             particle.resetColor();
             particle.setSpeed(this.speed);
             particle.setAcceleration(this.acceleration);
-        } else {
-            particle.updatePosition();
-            particle.updateLifeTime();
-            particle.adjustSpeedByAcceleration();
-            particle.updateColor();
             particle.swapColor(this.startColor, this.endColor);
+        } else {
+            particle.update();
         }
     }
     requestAnimationFrame(update);

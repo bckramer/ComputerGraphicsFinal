@@ -24,6 +24,13 @@ var ParticleObject = function(mesh, lifetime, speed, acceleration, direction, st
     this.endColor = endColor;
 };
 
+ParticleObject.prototype.update = function(){
+    this.updatePosition();
+    this.updateLifeTime();
+    this.adjustSpeedByAcceleration();
+    this.updateColor();
+};
+
 ParticleObject.prototype.updatePosition = function() {
     this.mesh.position.x = this.mesh.position.x + (this.direction.elements[0] * this.speed);
     this.mesh.position.y = this.mesh.position.y + (this.direction.elements[1] * this.speed);
