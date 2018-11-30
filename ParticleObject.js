@@ -34,9 +34,11 @@ ParticleObject.prototype.update = function(){
 };
 
 ParticleObject.prototype.updatePosition = function() {
-    this.mesh.position.x = this.mesh.position.x + (this.direction.elements[0] * this.speed);
-    this.mesh.position.y = this.mesh.position.y + (this.direction.elements[1] * this.speed);
-    this.mesh.position.z = this.mesh.position.z + (this.direction.elements[2] * this.speed);
+    this.mesh.position.set(
+        this.mesh.position.x + (this.direction.elements[0] * this.speed),
+        this.mesh.position.y + (this.direction.elements[1] * this.speed),
+        this.mesh.position.z + (this.direction.elements[2] * this.speed)
+    );
 };
 
 ParticleObject.prototype.updateColor = function() {
@@ -45,7 +47,6 @@ ParticleObject.prototype.updateColor = function() {
         parseFloat(this.startColor.g) + parseFloat((this.lifetime - this.lifeLeft) / this.lifetime * (this.endColor.g - this.startColor.g)),
         parseFloat(this.startColor.b) + parseFloat((this.lifetime - this.lifeLeft) / this.lifetime * (this.endColor.b - this.startColor.b))
     );
-
 };
 
 ParticleObject.prototype.updateLifeLeft = function() {
@@ -57,9 +58,7 @@ ParticleObject.prototype.adjustSpeedByAcceleration = function() {
 };
 
 ParticleObject.prototype.resetColor = function() {
-    this.mesh.material.color.r = this.startColor.r;
-    this.mesh.material.color.g = this.startColor.g;
-    this.mesh.material.color.b = this.startColor.b;
+    this.mesh.material.color = this.startColor;
 };
 
 ParticleObject.prototype.swapColor = function(newStartColor, newEndColor) {
@@ -68,9 +67,7 @@ ParticleObject.prototype.swapColor = function(newStartColor, newEndColor) {
 };
 
 ParticleObject.prototype.setPosition = function(x, y, z) {
-    this.mesh.position.x = x;
-    this.mesh.position.y = y;
-    this.mesh.position.z = z;
+    this.mesh.position.set(x,y,z);
 };
 
 ParticleObject.prototype.getMesh = function()

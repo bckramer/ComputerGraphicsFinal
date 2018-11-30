@@ -30,12 +30,16 @@ function updateTextBoxes() {
     this.size = document.getElementById("size").value;
     this.speed = document.getElementById("speed").value;
     this.acceleration = document.getElementById("acceleration").value;
-    this.startColor.r = this.startColorR = document.getElementById("startColorR").value;
-    this.startColor.g = this.startColorG = document.getElementById("startColorG").value;
-    this.startColor.b = this.startColorB = document.getElementById("startColorB").value;
-    this.endColor.r = this.endColorR = document.getElementById("endColorR").value;
-    this.endColor.g = this.endColorG = document.getElementById("endColorG").value;
-    this.endColor.b = this.endColorB = document.getElementById("endColorB").value;
+    this.startColor.setRGB(
+        document.getElementById("startColorR").value,
+        document.getElementById("startColorG").value,
+        document.getElementById("startColorB").value
+    );
+    this.endColor.setRGB(
+        document.getElementById("endColorR").value,
+        document.getElementById("endColorG").value,
+        document.getElementById("endColorB").value
+    );
 }
 
 var xSpeed = 3.0;
@@ -101,9 +105,7 @@ const pointLight =
     new THREE.PointLight(0xFFFFFF);
 
 // set its position
-pointLight.position.x = 10;
-pointLight.position.y = 50;
-pointLight.position.z = 130;
+pointLight.position.set(10,50,100);
 
 // add to the scene
 scene.add(pointLight);
@@ -151,9 +153,11 @@ for (let i = 0; i < numParticles; i++) {
 
         particleMaterial);
 
-    particleMesh.position.x = user.position.x + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
-    particleMesh.position.y = user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
-    particleMesh.position.z = user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
+    particleMesh.position.set(
+        user.position.x + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0),
+        user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0),
+        user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0)
+    );
 
     this.startColor = new THREE.Color(this.startColorR, this.startColorG, this.startColorB);
     this.endColor = new THREE.Color(this.endColorR, this.endColorG, this.endColorB);
