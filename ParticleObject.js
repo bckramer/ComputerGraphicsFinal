@@ -40,9 +40,12 @@ ParticleObject.prototype.updatePosition = function() {
 };
 
 ParticleObject.prototype.updateColor = function() {
-    this.mesh.material.color.r = parseFloat(this.startColor.r) + parseFloat((1.0 - this.lifeLeft) * (this.endColor.r - this.startColor.r));
-    this.mesh.material.color.g = parseFloat(this.startColor.g) + parseFloat((1.0 - this.lifeLeft) * (this.endColor.g - this.startColor.g));
-    this.mesh.material.color.b = parseFloat(this.startColor.b) + parseFloat((1.0 - this.lifeLeft) * (this.endColor.b - this.startColor.b));
+    this.mesh.material.color = new THREE.Color(
+        parseFloat(this.startColor.r) + parseFloat((this.lifetime - this.lifeLeft) / this.lifetime * (this.endColor.r - this.startColor.r)),
+        parseFloat(this.startColor.g) + parseFloat((this.lifetime - this.lifeLeft) / this.lifetime * (this.endColor.g - this.startColor.g)),
+        parseFloat(this.startColor.b) + parseFloat((this.lifetime - this.lifeLeft) / this.lifetime * (this.endColor.b - this.startColor.b))
+    );
+
 };
 
 ParticleObject.prototype.updateLifeLeft = function() {
