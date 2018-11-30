@@ -186,7 +186,7 @@ function update() {
         particle = objects[i];
 
         //    objects[i].position.x = Math.random() * 250 - 175;
-        if (particle.getLifetime() < 0) {
+        if (particle.getLifeLeft() < 0) {
             let spawnX = user.position.x + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
             let spawnY = user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
             let spawnZ = user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);

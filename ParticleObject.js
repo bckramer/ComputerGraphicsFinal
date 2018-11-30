@@ -4,8 +4,11 @@ const ParticleObject = function (mesh, lifetime, speed, acceleration, direction,
     // Sphere mesh
     this.mesh = mesh;
 
-    // Lifetime of this object
+    // Total Lifetime of this object
     this.lifetime = lifetime;
+
+    // Lifetime left of this object
+    this.lifeLeft = lifetime
 
     // Speed of object
     this.speed = speed;
@@ -25,7 +28,7 @@ const ParticleObject = function (mesh, lifetime, speed, acceleration, direction,
 
 ParticleObject.prototype.update = function(){
     this.updatePosition();
-    this.updateLifeTime();
+    this.updateLifeLeft();
     this.adjustSpeedByAcceleration();
     this.updateColor();
 };
@@ -37,13 +40,13 @@ ParticleObject.prototype.updatePosition = function() {
 };
 
 ParticleObject.prototype.updateColor = function() {
-    this.mesh.material.color.r = parseFloat(this.startColor.r) + parseFloat((1.0 - this.lifetime) * (this.endColor.r - this.startColor.r));
-    this.mesh.material.color.g = parseFloat(this.startColor.g) + parseFloat((1.0 - this.lifetime) * (this.endColor.g - this.startColor.g));
-    this.mesh.material.color.b = parseFloat(this.startColor.b) + parseFloat((1.0 - this.lifetime) * (this.endColor.b - this.startColor.b));
+    this.mesh.material.color.r = parseFloat(this.startColor.r) + parseFloat((1.0 - this.lifeLeft) * (this.endColor.r - this.startColor.r));
+    this.mesh.material.color.g = parseFloat(this.startColor.g) + parseFloat((1.0 - this.lifeLeft) * (this.endColor.g - this.startColor.g));
+    this.mesh.material.color.b = parseFloat(this.startColor.b) + parseFloat((1.0 - this.lifeLeft) * (this.endColor.b - this.startColor.b));
 };
 
-ParticleObject.prototype.updateLifeTime = function() {
-    this.lifetime = this.lifetime - lifeDecay;
+ParticleObject.prototype.updateLifeLeft = function() {
+    this.lifeLeft = this.lifeLeft - lifeDecay;
 };
 
 ParticleObject.prototype.adjustSpeedByAcceleration = function() {
@@ -72,14 +75,15 @@ ParticleObject.prototype.getMesh = function()
     return this.mesh;
 };
 
-ParticleObject.prototype.getLifetime = function()
+ParticleObject.prototype.getLifeLeft = function()
 {
-    return this.lifetime;
+    return this.lifeLeft;
 };
 
 ParticleObject.prototype.setLifetime = function(lifetime)
 {
     this.lifetime = lifetime;
+    this.lifeLeft = lifetime;
 };
 
 ParticleObject.prototype.getSpeed = function()
