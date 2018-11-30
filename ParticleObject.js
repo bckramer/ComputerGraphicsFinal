@@ -1,6 +1,6 @@
 const lifeDecay = 0.01;
 
-var ParticleObject = function(mesh, lifetime, speed, direction, startColor, endColor)
+var ParticleObject = function(mesh, lifetime, speed, acceleration, direction, startColor, endColor)
 {
     // Sphere mesh
     this.mesh = mesh;
@@ -10,6 +10,9 @@ var ParticleObject = function(mesh, lifetime, speed, direction, startColor, endC
 
     // Speed of object
     this.speed = speed;
+
+    // Acceleration of object
+    this.acceleration = acceleration;
 
     // Direction of object
     this.direction = direction;
@@ -35,6 +38,10 @@ ParticleObject.prototype.updateColor = function() {
 
 ParticleObject.prototype.updateLifeTime = function() {
     this.lifetime = this.lifetime - lifeDecay;
+};
+
+ParticleObject.prototype.adjustSpeedByAcceleration = function() {
+    this.speed = this.speed * this.acceleration;
 };
 
 ParticleObject.prototype.resetColor = function() {

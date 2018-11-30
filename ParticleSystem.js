@@ -16,17 +16,20 @@ var compactability = document.getElementById("compactability").value;
 var lifetime = document.getElementById("lifetime").value;
 var size = document.getElementById("size").value;
 var speed = document.getElementById("speed").value;
+var acceleration = document.getElementById("acceleration").value;
 var startColorR = document.getElementById("startColorR").value;
 var startColorG = document.getElementById("startColorG").value;
 var startColorB = document.getElementById("startColorB").value;
 var endColorR = document.getElementById("endColorR").value;
 var endColorG = document.getElementById("endColorG").value;
 var endColorB = document.getElementById("endColorB").value;
+
 function updateTextBoxes() {
     this.compactability = document.getElementById("compactability").value;
     this.lifetime = document.getElementById("lifetime").value;
     this.size = document.getElementById("size").value;
     this.speed = document.getElementById("speed").value;
+    this.acceleration = document.getElementById("acceleration").value;
     startColor.r = this.startColorR = document.getElementById("startColorR").value;
     startColor.g = this.startColorG = document.getElementById("startColorG").value;
     startColor.b = this.startColorB = document.getElementById("startColorB").value;
@@ -129,11 +132,13 @@ user.position.z = -300;
 scene.add(user);
 
 for (var i = 0; i < numParticles; i++) {
+
     let particleMaterial =
         new THREE.MeshPhongMaterial(
             {
                 color: new THREE.Color(0xFFFFFF)
             });
+
     let particleMesh = new THREE.Mesh(
         // new THREE.SphereGeometry(
         //     0.5,
@@ -145,9 +150,11 @@ for (var i = 0; i < numParticles; i++) {
             1.0),
 
         particleMaterial);
+
     particleMesh.position.x = user.position.x + Math.random() * 20 - 10;
     particleMesh.position.y = user.position.y + Math.random() * 20 - 10;
     particleMesh.position.z = user.position.z + Math.random() * 20 - 10;
+
     this.startColor = new THREE.Color(this.startColorR, this.startColorG, this.startColorB);
     this.endColor = new THREE.Color(this.endColorR, this.endColorG, this.endColorB);
 
@@ -156,6 +163,7 @@ for (var i = 0; i < numParticles; i++) {
                 particleMesh, //Mesh
                 this.lifetime * Math.random(), //Lifetime. If there is no random, all the particle will spawn and die at the same time
                 this.speed, //Speed
+                this.acceleration, //Acceleration
                 new Vector3([1 - (2 * Math.random()), 1 - (2 *Math.random()), 1 - (2 * Math.random())]), //Direction
                 new THREE.Color(this.startColor), //StartColor
                 new THREE.Color(this.endColor) //EndColor
@@ -178,11 +186,14 @@ function update() {
             objects[i].setPosition(spawnX, spawnY, spawnZ);
             objects[i].lifetime = this.lifetime;
             objects[i].resetColor();
+            objects[i].speed = this.speed;
+            objects[i].acceleration = this.acceleration;
         } else {
             objects[i].updatePosition();
             objects[i].updateLifeTime();
+            objects[i].adjustSpeedByAcceleration();
             objects[i].updateColor();
-            objects[i].swapColor(this.startColor, this.endColor)
+            objects[i].swapColor(this.startColor, this.endColor);
         }
     }
     requestAnimationFrame(update);
