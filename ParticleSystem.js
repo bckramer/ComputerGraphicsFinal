@@ -28,6 +28,9 @@ function updateTextBoxes() {
     this.spawnDensity = document.getElementById("spawnDensity").value;
     this.lifetime = document.getElementById("lifetime").value;
     this.size = document.getElementById("size").value;
+    if (this.size < 0.001){
+        this.size = 0.001;
+    }
     this.speed = document.getElementById("speed").value;
     this.acceleration = document.getElementById("acceleration").value;
     this.startColor.setRGB(
