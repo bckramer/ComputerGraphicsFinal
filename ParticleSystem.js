@@ -30,12 +30,12 @@ function updateTextBoxes() {
     this.size = document.getElementById("size").value;
     this.speed = document.getElementById("speed").value;
     this.acceleration = document.getElementById("acceleration").value;
-    startColor.r = this.startColorR = document.getElementById("startColorR").value;
-    startColor.g = this.startColorG = document.getElementById("startColorG").value;
-    startColor.b = this.startColorB = document.getElementById("startColorB").value;
-    endColor.r = this.endColorR = document.getElementById("endColorR").value;
-    endColor.g = this.endColorG = document.getElementById("endColorG").value;
-    endColor.b = this.endColorB = document.getElementById("endColorB").value;
+    this.startColor.r = this.startColorR = document.getElementById("startColorR").value;
+    this.startColor.g = this.startColorG = document.getElementById("startColorG").value;
+    this.startColor.b = this.startColorB = document.getElementById("startColorB").value;
+    this.endColor.r = this.endColorR = document.getElementById("endColorR").value;
+    this.endColor.g = this.endColorG = document.getElementById("endColorG").value;
+    this.endColor.b = this.endColorB = document.getElementById("endColorB").value;
 }
 
 var xSpeed = 3.0;
