@@ -1,13 +1,15 @@
 // Set the scene size.
 const WIDTH = 600;
 const HEIGHT = 600;
+var positions, colors, direction;
+var bufferGeometry;
 
 // Set some camera attributes.
 const VIEW_ANGLE = 45;
 const ASPECT = WIDTH / HEIGHT;
 const NEAR = 0.1;
 const FAR = 10000;
-const numParticles = 5000;
+const numParticles = 100000;
 let minLifetime;
 let maxLifetime;
 let minSize;
@@ -22,13 +24,13 @@ var lifetimeVariation = document.getElementById("lifetimeVariation").value;
 minLifetime = lifetime - lifetimeVariation / 2.0;
 maxLifetime = parseFloat(lifetime) + parseFloat(lifetimeVariation / 2.0);
 var size = document.getElementById("size").value;
-if (size < 0.001){
+if (size < 0.001) {
     size = 0.001;
 }
 var sizeVariation = document.getElementById("sizeVariation").value;
-if(size - sizeVariation / 2 < 0.001){
+if (size - sizeVariation / 2 < 0.001) {
     minSize = 0.001;
-}else{
+} else {
     minSize = size - sizeVariation / 2.0;
 }
 maxSize = parseFloat(size) + parseFloat(sizeVariation / 2.0);
@@ -49,13 +51,13 @@ function updateTextBoxes() {
     maxLifetime = parseFloat(lifetime) + parseFloat(lifetimeVariation / 2.0);
 
     size = document.getElementById("size").value;
-    if (size < 0.001){
+    if (size < 0.001) {
         size = 0.001;
     }
     sizeVariation = document.getElementById("sizeVariation").value;
-    if(size - sizeVariation / 2.0 < 0.001){
+    if (size - sizeVariation / 2.0 < 0.001) {
         minSize = 0.001;
-    }else{
+    } else {
         minSize = size - sizeVariation / 2.0;
     }
     maxSize = parseFloat(size) + parseFloat(sizeVariation / 2.0);
@@ -78,6 +80,7 @@ var ySpeed = 3.0;
 var zSpeed = 3.0;
 
 document.addEventListener("keydown", onDocumentKeyDown, false);
+
 function onDocumentKeyDown(event) {
     var keyCode = event.which;
     if (keyCode === 87) {
@@ -136,7 +139,7 @@ const pointLight =
     new THREE.PointLight(0xFFFFFF);
 
 // set its position
-pointLight.position.set(10,50,100);
+pointLight.position.set(10, 50, 100);
 
 // add to the scene
 scene.add(pointLight);
@@ -164,37 +167,115 @@ const user = new THREE.Mesh(
 user.position.z = -300;
 scene.add(user);
 
-for (let i = 0; i < numParticles; i++) {
 
-    let particleMaterial =
-        new THREE.PointsMaterial(
-            {
-                color: new THREE.Color(0xFFFFFF)
-            });
+function updateGeomData() {
+    var vertices = new Float32Array([
+        -1.0, -1.0, 1.0,
+        1.0, -1.0, 1.0,
+        1.0, 1.0, 1.0,
 
-    // let particleMesh = new THREE.Mesh(
-    //     // new THREE.SphereGeometry(
-    //     //     0.5,
-    //     //     RADIUS,
-    //     //     RINGS),
-    //     new THREE.PlaneGeometry(
-    //         1.0,
-    //         1.0,
-    //         1.0),
+        1.0, 1.0, 1.0,
+        -1.0, 1.0, 1.0,
+        -1.0, -1.0, 1.0
+    ]);
+    vertices = vertices * 0.01;
+    let x = user.position.x + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
+    let y = user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
+    let z = user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
+    for (var i = 0; i < numParticles; i++) {
+        x = user.position.x + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
+        y = user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
+        z = user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
+        positions[i * 18 + 0] = positions[i * 18 + 0] + speed * direction[3 * i + 0];
+        positions[i * 18 + 1] = positions[i * 18 + 1] + speed * direction[3 * i + 1];
+        positions[i * 18 + 2] = positions[i * 18 + 2] + speed * direction[3 * i + 2];
+        positions[i * 18 + 3] = positions[i * 18 + 3] + speed * direction[3 * i + 0];
+        positions[i * 18 + 4] = positions[i * 18 + 4] + speed * direction[3 * i + 1];
+        positions[i * 18 + 5] = positions[i * 18 + 5] + speed * direction[3 * i + 2];
+        positions[i * 18 + 6] = positions[i * 18 + 6] + speed * direction[3 * i + 0];
+        positions[i * 18 + 7] = positions[i * 18 + 7] + speed * direction[3 * i + 1];
+        positions[i * 18 + 8] = positions[i * 18 + 8] + speed * direction[3 * i + 2];
+        positions[i * 18 + 9] = positions[i * 18 + 9] + speed * direction[3 * i + 0];
+        positions[i * 18 + 10] = positions[i * 18 + 10] + speed * direction[3 * i + 1];
+        positions[i * 18 + 11] = positions[i * 18 + 11] + speed * direction[3 * i + 2];
+        positions[i * 18 + 12] = positions[i * 18 + 12] + speed * direction[3 * i + 0];
+        positions[i * 18 + 13] = positions[i * 18 + 13] + speed * direction[3 * i + 1];
+        positions[i * 18 + 14] = positions[i * 18 + 14] + speed * direction[3 * i + 2];
+        positions[i * 18 + 15] = positions[i * 18 + 15] + speed * direction[3 * i + 0];
+        positions[i * 18 + 16] = positions[i * 18 + 16] + speed * direction[3 * i + 1];
+        positions[i * 18 + 17] = positions[i * 18 + 17] + speed * direction[3 * i + 2];
 
-    var vertices = new Float32Array( [
-        -1.0, -1.0,  1.0,
-        1.0, -1.0,  1.0,
-        1.0,  1.0,  1.0,
+        colors[i * 3 + 0] = 1;
+        colors[i * 3 + 1] = 1;
+        colors[i * 3 + 2] = 1;
+    }
+}
 
-        1.0,  1.0,  1.0,
-        -1.0,  1.0,  1.0,
-        -1.0, -1.0,  1.0
-    ] );
+let particleMaterial =
+    new THREE.PointsMaterial(
+        {
+            color: new THREE.Color(0xFFFFFF)
+        });
 
-    var geometry = new THREE.BufferGeometry();
-    geometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ).setDynamic(true) );
-    let particleMesh = new THREE.Mesh(geometry, particleMaterial);
+// let particleMesh = new THREE.Mesh(
+//     // new THREE.SphereGeometry(
+//     //     0.5,
+//     //     RADIUS,
+//     //     RINGS),
+//     new THREE.PlaneGeometry(
+//         1.0,
+//         1.0,
+//         1.0),
+var vertices = new Float32Array([
+    -1.0, -1.0, 1.0,
+    1.0, -1.0, 1.0,
+    1.0, 1.0, 1.0,
+
+    1.0, 1.0, 1.0,
+    -1.0, 1.0, 1.0,
+    -1.0, -1.0, 1.0
+]);
+    bufferGeometry = new THREE.BufferGeometry();
+    bufferGeometry.dynamic = true;
+    bufferGeometry.addAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices.length * numParticles), 3));
+    bufferGeometry.addAttribute('color', new THREE.BufferAttribute(new Float32Array(3 * numParticles), 3));
+    bufferGeometry.addAttribute('direction', new THREE.BufferAttribute(new Float32Array(3 * numParticles), 3));
+
+    positions = bufferGeometry.attributes.position.array;
+    colors = bufferGeometry.attributes.color.array;
+    direction = bufferGeometry.attributes.direction.array;
+
+    for (let i = 0; i < positions.length; i++) {
+        positions[i * 18 + 0] = vertices[0];
+        positions[i * 18 + 1] = vertices[1];
+        positions[i * 18 + 2] = vertices[2];
+        positions[i * 18 + 3] = vertices[3];
+        positions[i * 18 + 4] = vertices[4];
+        positions[i * 18 + 5] = vertices[5];
+        positions[i * 18 + 6] = vertices[6];
+        positions[i * 18 + 7] = vertices[7];
+        positions[i * 18 + 8] = vertices[8];
+        positions[i * 18 + 9] = vertices[9];
+        positions[i * 18 + 10] = vertices[10];
+        positions[i * 18 + 11] = vertices[11];
+        positions[i * 18 + 12] = vertices[12];
+        positions[i * 18 + 13] = vertices[13];
+        positions[i * 18 + 14] = vertices[14];
+        positions[i * 18 + 15] = vertices[15];
+        positions[i * 18 + 16] = vertices[16];
+        positions[i * 18 + 17] = vertices[17];
+    }
+    for (let i = 0; i < direction.length / 3; i++) {
+        let tempVec = new THREE.Vector3(1 - (2 * Math.random()), 1 - (2 * Math.random()), 1 - (2 * Math.random()));
+        tempVec.normalize();
+        direction[i * 3 + 0] = tempVec.x;
+        direction[i * 3 + 1] = tempVec.y;
+        direction[i * 3 + 2] = tempVec.z;
+
+    }
+
+    updateGeomData();
+    let particleMesh = new THREE.Mesh(bufferGeometry, particleMaterial);
 
     particleMesh.position.set(
         user.position.x + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0),
@@ -209,19 +290,18 @@ for (let i = 0; i < numParticles; i++) {
 
     let particle =
         new ParticleObject(
-                particleMesh, //Mesh
-                this.lifetime * Math.random(), //Lifetime. If there is no random, all the particle will spawn and die at the same time
-                this.speed, //Speed
-                this.acceleration, //Acceleration
-                new Vector3([1 - (2 * Math.random()), 1 - (2 *Math.random()), 1 - (2 * Math.random())]), //Direction
-                new THREE.Color(this.startColor), //StartColor
-                new THREE.Color(this.endColor) //EndColor
-            );
+            particleMesh, //Mesh
+            this.lifetime * Math.random(), //Lifetime. If there is no random, all the particle will spawn and die at the same time
+            this.speed, //Speed
+            this.acceleration, //Acceleration
+            new Vector3([1 - (2 * Math.random()), 1 - (2 * Math.random()), 1 - (2 * Math.random())]), //Direction
+            new THREE.Color(this.startColor), //StartColor
+            new THREE.Color(this.endColor) //EndColor
+        );
 
 
     objects.push(particle);
     scene.add(particle.mesh);
-}
 
 function update() {
 
@@ -229,28 +309,12 @@ function update() {
     renderer.render(scene, camera);
 
     let particle;
-
-    for (let i = 0; i < objects.length; i++) {
-
-        particle = objects[i];
-
-        //    objects[i].position.x = Math.random() * 250 - 175;
-        if (particle.getLifeLeft() < 0) {
-            let spawnX = user.position.x + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
-            let spawnY = user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
-            let spawnZ = user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
-            particle.setPosition(spawnX, spawnY, spawnZ);
-            particle.setSize(parseFloat(Math.random() * (maxSize - minSize)) + parseFloat(minSize));
-            particle.setLifetime(parseFloat(Math.random() * (maxLifetime - minLifetime)) + parseFloat(minLifetime));
-            particle.resetColor();
-            particle.setSpeed(this.speed);
-            particle.setAcceleration(this.acceleration);
-            particle.swapColor(this.startColor, this.endColor);
-        } else {
-            particle.update();
-        }
-    }
+    updateGeomData();
+    bufferGeometry.attributes.position.needsUpdate = true;
+    bufferGeometry.attributes.color.needsUpdate = true;
+    bufferGeometry.computeBoundingSphere();
     requestAnimationFrame(update);
+    renderer.render(scene, camera);
 }
 
 // Schedule the first frame.
