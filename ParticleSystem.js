@@ -7,7 +7,7 @@ const VIEW_ANGLE = 45;
 const ASPECT = WIDTH / HEIGHT;
 const NEAR = 0.1;
 const FAR = 10000;
-const numParticles = 1000;
+const numParticles = 5000;
 let minLifetime;
 let maxLifetime;
 let minSize;
@@ -167,22 +167,34 @@ scene.add(user);
 for (let i = 0; i < numParticles; i++) {
 
     let particleMaterial =
-        new THREE.MeshPhongMaterial(
+        new THREE.PointsMaterial(
             {
                 color: new THREE.Color(0xFFFFFF)
             });
 
-    let particleMesh = new THREE.Mesh(
-        // new THREE.SphereGeometry(
-        //     0.5,
-        //     RADIUS,
-        //     RINGS),
-        new THREE.PlaneGeometry(
-            1.0,
-            1.0,
-            1.0),
+    // let particleMesh = new THREE.Mesh(
+    //     // new THREE.SphereGeometry(
+    //     //     0.5,
+    //     //     RADIUS,
+    //     //     RINGS),
+    //     new THREE.PlaneGeometry(
+    //         1.0,
+    //         1.0,
+    //         1.0),
 
-        particleMaterial);
+    var vertices = new Float32Array( [
+        -1.0, -1.0,  1.0,
+        1.0, -1.0,  1.0,
+        1.0,  1.0,  1.0,
+
+        1.0,  1.0,  1.0,
+        -1.0,  1.0,  1.0,
+        -1.0, -1.0,  1.0
+    ] );
+
+    var geometry = new THREE.BufferGeometry();
+    geometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ).setDynamic(true) );
+    let particleMesh = new THREE.Mesh(geometry, particleMaterial);
 
     particleMesh.position.set(
         user.position.x + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0),
