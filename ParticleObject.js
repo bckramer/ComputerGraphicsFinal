@@ -8,7 +8,7 @@ const ParticleObject = function (mesh, lifetime, speed, acceleration, direction,
     this.lifetime = lifetime;
 
     // Lifetime left of this object
-    this.lifeLeft = lifetime
+    this.lifeLeft = lifetime;
 
     // Speed of object
     this.speed = speed;

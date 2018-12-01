@@ -8,6 +8,8 @@ const ASPECT = WIDTH / HEIGHT;
 const NEAR = 0.1;
 const FAR = 10000;
 const numParticles = 1000;
+let minSize;
+let maxSize;
 let startColor;
 let endColor;
 const objects = [];
@@ -15,6 +17,7 @@ const objects = [];
 var spawnDensity = document.getElementById("spawnDensity").value;
 var lifetime = document.getElementById("lifetime").value;
 var size = document.getElementById("size").value;
+var sizeRange = document.getElementById("sizeRange").value;
 var speed = document.getElementById("speed").value;
 var acceleration = document.getElementById("acceleration").value;
 var startColorR = document.getElementById("startColorR").value;
@@ -31,6 +34,13 @@ function updateTextBoxes() {
     if (this.size < 0.001){
         this.size = 0.001;
     }
+    this.sizeRange = document.getElementById("sizeRange").value;
+    if(size - sizeRange / 2 < 0.001){
+        minSize = 0.001;
+    }else{
+        minSize = size - sizeRange / 2;
+    }
+    maxSize = parseFloat(size) + parseFloat(sizeRange / 2);
     this.speed = document.getElementById("speed").value;
     this.acceleration = document.getElementById("acceleration").value;
     this.startColor.setRGB(
@@ -200,7 +210,7 @@ function update() {
             let spawnY = user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
             let spawnZ = user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
             particle.setPosition(spawnX, spawnY, spawnZ);
-            particle.setSize(size);
+            particle.setSize(parseFloat(Math.random() * (maxSize - minSize)) + parseFloat(minSize));
             particle.setLifetime(this.lifetime);
             particle.resetColor();
             particle.setSpeed(this.speed);
