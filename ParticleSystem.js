@@ -9,7 +9,7 @@ const VIEW_ANGLE = 45;
 const ASPECT = WIDTH / HEIGHT;
 const NEAR = 0.1;
 const FAR = 10000;
-const numParticles = 100000;
+const numParticles = 10000;
 let minLifetime;
 let maxLifetime;
 let minSize;
@@ -42,70 +42,6 @@ var startColorB = document.getElementById("startColorB").value;
 var endColorR = document.getElementById("endColorR").value;
 var endColorG = document.getElementById("endColorG").value;
 var endColorB = document.getElementById("endColorB").value;
-
-function updateTextBoxes() {
-    spawnDensity = document.getElementById("spawnDensity").value;
-    lifetime = document.getElementById("lifetime").value;
-    lifetimeVariation = document.getElementById("lifetimeVariation").value;
-    minLifetime = lifetime - lifetimeVariation / 2.0;
-    maxLifetime = parseFloat(lifetime) + parseFloat(lifetimeVariation / 2.0);
-
-    size = document.getElementById("size").value;
-    if (size < 0.001) {
-        size = 0.001;
-    }
-    sizeVariation = document.getElementById("sizeVariation").value;
-    if (size - sizeVariation / 2.0 < 0.001) {
-        minSize = 0.001;
-    } else {
-        minSize = size - sizeVariation / 2.0;
-    }
-    maxSize = parseFloat(size) + parseFloat(sizeVariation / 2.0);
-    speed = document.getElementById("speed").value;
-    acceleration = document.getElementById("acceleration").value;
-    this.startColor.setRGB(
-        document.getElementById("startColorR").value,
-        document.getElementById("startColorG").value,
-        document.getElementById("startColorB").value
-    );
-    this.endColor.setRGB(
-        document.getElementById("endColorR").value,
-        document.getElementById("endColorG").value,
-        document.getElementById("endColorB").value
-    );
-}
-
-var xSpeed = 3.0;
-var ySpeed = 3.0;
-var zSpeed = 3.0;
-
-document.addEventListener("keydown", onDocumentKeyDown, false);
-
-function onDocumentKeyDown(event) {
-    var keyCode = event.which;
-    if (keyCode === 87) {
-        //w
-        user.position.z -= zSpeed;
-    } else if (keyCode === 83) {
-        //s
-        user.position.z += zSpeed;
-    } else if (keyCode === 65) {
-        //a
-        user.position.x -= xSpeed;
-    } else if (keyCode === 68) {
-        //d
-        user.position.x += xSpeed;
-    } else if (keyCode === 82) {
-        //r
-        user.position.y += ySpeed;
-    } else if (keyCode === 70) {
-        //f
-        user.position.y -= ySpeed;
-    } else if (keyCode === 32) {
-        //space
-        user.position.set(0, 0, 0);
-    }
-}
 
 // Get the DOM element to attach to
 const container =
@@ -196,42 +132,32 @@ function updateGeomData() {
     }
 }
 
-let particleMaterial =
-    new THREE.PointsMaterial(
-        {
-            color: new THREE.Color(0xFFFFFF)
-        });
+function main() {
+    let particleMaterial =
+        new THREE.PointsMaterial(
+            {
+                color: new THREE.Color(0xFFFFFF)
+            });
 
-// let particleMesh = new THREE.Mesh(
-//     // new THREE.SphereGeometry(
-//     //     0.5,
-//     //     RADIUS,
-//     //     RINGS),
-//     new THREE.PlaneGeometry(
-//         1.0,
-//         1.0,
-//         1.0),
-var vertices = new Float32Array([
-    -1.0, -1.0, 1.0,
-    1.0, -1.0, 1.0,
-    1.0, 1.0, 1.0,
+    var vertices = new Float32Array([
+        -1.0, -1.0, 1.0,
+        1.0, -1.0, 1.0,
+        1.0, 1.0, 1.0,
 
-    1.0, 1.0, 1.0,
-    -1.0, 1.0, 1.0,
-    -1.0, -1.0, 1.0
-]);
+        1.0, 1.0, 1.0,
+        -1.0, 1.0, 1.0,
+        -1.0, -1.0, 1.0
+    ]);
     bufferGeometry = new THREE.BufferGeometry();
     bufferGeometry.dynamic = true;
     bufferGeometry.addAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices.length * numParticles), 3));
     bufferGeometry.addAttribute('color', new THREE.BufferAttribute(new Float32Array(3 * numParticles), 3));
     bufferGeometry.addAttribute('direction', new THREE.BufferAttribute(new Float32Array(3 * numParticles), 3));
-
     positions = bufferGeometry.attributes.position.array;
     colors = bufferGeometry.attributes.color.array;
     direction = bufferGeometry.attributes.direction.array;
-
     for (let i = 0; i < positions.length; i++) {
-        for (let j = 0; j < 18; j++){
+        for (let j = 0; j < 18; j++) {
             positions[i * 18 + j] = vertices[j];
         }
     }
@@ -241,23 +167,17 @@ var vertices = new Float32Array([
         direction[i * 3 + 0] = tempVec.x;
         direction[i * 3 + 1] = tempVec.y;
         direction[i * 3 + 2] = tempVec.z;
-
     }
-
     updateGeomData();
     let particleMesh = new THREE.Mesh(bufferGeometry, particleMaterial);
-
     particleMesh.position.set(
         user.position.x + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0),
         user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0),
         user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0)
     );
-
     particleMesh.scale.setScalar(parseFloat(Math.random() * (maxSize - minSize)) + parseFloat(minSize));
-
     this.startColor = new THREE.Color(this.startColorR, this.startColorG, this.startColorB);
     this.endColor = new THREE.Color(this.endColorR, this.endColorG, this.endColorB);
-
     let particle =
         new ParticleObject(
             particleMesh, //Mesh
@@ -268,10 +188,9 @@ var vertices = new Float32Array([
             new THREE.Color(this.startColor), //StartColor
             new THREE.Color(this.endColor) //EndColor
         );
-
-
     objects.push(particle);
     scene.add(particle.mesh);
+}
 
 function update() {
 
