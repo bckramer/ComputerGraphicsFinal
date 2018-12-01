@@ -25,6 +25,7 @@ const ParticleObject = function (mesh, lifetime, speed, acceleration, direction,
     // The color the particle interpolates to throughout its lifetime
     this.endColor = endColor;
 
+    // The color change in each update
     this.deltaR = parseFloat((endColor.r - startColor.r) / lifetime * lifeDecay);
     this.deltaG = parseFloat((endColor.g - startColor.g) / lifetime * lifeDecay);
     this.deltaB = parseFloat((endColor.b - startColor.b) / lifetime * lifeDecay);
