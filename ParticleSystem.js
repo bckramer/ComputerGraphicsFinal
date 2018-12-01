@@ -7,11 +7,13 @@ const VIEW_ANGLE = 45;
 const ASPECT = WIDTH / HEIGHT;
 const NEAR = 0.1;
 const FAR = 10000;
-const numParticles = 5000;
+const numParticles = 100;
 let minLifetime;
 let maxLifetime;
 let minSize;
 let maxSize;
+let minSpeed;
+let maxSpeed;
 let startColor;
 let endColor;
 const objects = [];
@@ -33,6 +35,9 @@ if(size - sizeVariation / 2 < 0.001){
 }
 maxSize = parseFloat(size) + parseFloat(sizeVariation / 2.0);
 var speed = document.getElementById("speed").value;
+var speedVariation = document.getElementById("speedVariation").value;
+minSpeed = speed - speedVariation / 2.0;
+maxSpeed = speed - speedVariation / 2.0;
 var acceleration = document.getElementById("acceleration").value;
 var startColorR = document.getElementById("startColorR").value;
 var startColorG = document.getElementById("startColorG").value;
@@ -60,6 +65,9 @@ function updateTextBoxes() {
     }
     maxSize = parseFloat(size) + parseFloat(sizeVariation / 2.0);
     speed = document.getElementById("speed").value;
+    speedVariation = document.getElementById("speedVariation").value;
+    minSpeed = speed - speedVariation / 2.0;
+    maxSpeed = speed - speedVariation / 2.0;
     acceleration = document.getElementById("acceleration").value;
     this.startColor.setRGB(
         document.getElementById("startColorR").value,
@@ -210,9 +218,9 @@ for (let i = 0; i < numParticles; i++) {
     let particle =
         new ParticleObject(
                 particleMesh, //Mesh
-                this.lifetime * Math.random(), //Lifetime. If there is no random, all the particle will spawn and die at the same time
-                this.speed, //Speed
-                this.acceleration, //Acceleration
+                lifetime * Math.random(), //Lifetime. If there is no random, all the particle will spawn and die at the same time
+                parseFloat(Math.random() * (maxSpeed - minSpeed)) + parseFloat(minSpeed), //Speed
+                acceleration, //Acceleration
                 new Vector3([1 - (2 * Math.random()), 1 - (2 *Math.random()), 1 - (2 * Math.random())]).normalize(), //Direction
                 new THREE.Color(this.startColor), //StartColor
                 new THREE.Color(this.endColor) //EndColor
@@ -243,7 +251,7 @@ function update() {
             particle.setSize(parseFloat(Math.random() * (maxSize - minSize)) + parseFloat(minSize));
             particle.setLifetime(parseFloat(Math.random() * (maxLifetime - minLifetime)) + parseFloat(minLifetime));
             particle.resetColor();
-            particle.setSpeed(this.speed);
+            particle.setSpeed(parseFloat(Math.random() * (maxSpeed - minSpeed)) + parseFloat(minSpeed));
             particle.setAcceleration(this.acceleration);
             particle.swapColor(this.startColor, this.endColor);
         } else {
