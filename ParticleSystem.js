@@ -186,24 +186,9 @@ function updateGeomData() {
         x = user.position.x + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
         y = user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
         z = user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
-        positions[i * 18 + 0] = positions[i * 18 + 0] + speed * direction[3 * i + 0];
-        positions[i * 18 + 1] = positions[i * 18 + 1] + speed * direction[3 * i + 1];
-        positions[i * 18 + 2] = positions[i * 18 + 2] + speed * direction[3 * i + 2];
-        positions[i * 18 + 3] = positions[i * 18 + 3] + speed * direction[3 * i + 0];
-        positions[i * 18 + 4] = positions[i * 18 + 4] + speed * direction[3 * i + 1];
-        positions[i * 18 + 5] = positions[i * 18 + 5] + speed * direction[3 * i + 2];
-        positions[i * 18 + 6] = positions[i * 18 + 6] + speed * direction[3 * i + 0];
-        positions[i * 18 + 7] = positions[i * 18 + 7] + speed * direction[3 * i + 1];
-        positions[i * 18 + 8] = positions[i * 18 + 8] + speed * direction[3 * i + 2];
-        positions[i * 18 + 9] = positions[i * 18 + 9] + speed * direction[3 * i + 0];
-        positions[i * 18 + 10] = positions[i * 18 + 10] + speed * direction[3 * i + 1];
-        positions[i * 18 + 11] = positions[i * 18 + 11] + speed * direction[3 * i + 2];
-        positions[i * 18 + 12] = positions[i * 18 + 12] + speed * direction[3 * i + 0];
-        positions[i * 18 + 13] = positions[i * 18 + 13] + speed * direction[3 * i + 1];
-        positions[i * 18 + 14] = positions[i * 18 + 14] + speed * direction[3 * i + 2];
-        positions[i * 18 + 15] = positions[i * 18 + 15] + speed * direction[3 * i + 0];
-        positions[i * 18 + 16] = positions[i * 18 + 16] + speed * direction[3 * i + 1];
-        positions[i * 18 + 17] = positions[i * 18 + 17] + speed * direction[3 * i + 2];
+        for (var j = 0; j < 18; j++){
+            positions[i * 18 + j] = positions[i * 18 + j] + speed * direction[3 * i + (j % 3)];
+        }
 
         colors[i * 3 + 0] = 1;
         colors[i * 3 + 1] = 1;
@@ -246,24 +231,9 @@ var vertices = new Float32Array([
     direction = bufferGeometry.attributes.direction.array;
 
     for (let i = 0; i < positions.length; i++) {
-        positions[i * 18 + 0] = vertices[0];
-        positions[i * 18 + 1] = vertices[1];
-        positions[i * 18 + 2] = vertices[2];
-        positions[i * 18 + 3] = vertices[3];
-        positions[i * 18 + 4] = vertices[4];
-        positions[i * 18 + 5] = vertices[5];
-        positions[i * 18 + 6] = vertices[6];
-        positions[i * 18 + 7] = vertices[7];
-        positions[i * 18 + 8] = vertices[8];
-        positions[i * 18 + 9] = vertices[9];
-        positions[i * 18 + 10] = vertices[10];
-        positions[i * 18 + 11] = vertices[11];
-        positions[i * 18 + 12] = vertices[12];
-        positions[i * 18 + 13] = vertices[13];
-        positions[i * 18 + 14] = vertices[14];
-        positions[i * 18 + 15] = vertices[15];
-        positions[i * 18 + 16] = vertices[16];
-        positions[i * 18 + 17] = vertices[17];
+        for (let j = 0; j < 18; j++){
+            positions[i * 18 + j] = vertices[j];
+        }
     }
     for (let i = 0; i < direction.length / 3; i++) {
         let tempVec = new THREE.Vector3(1 - (2 * Math.random()), 1 - (2 * Math.random()), 1 - (2 * Math.random()));
