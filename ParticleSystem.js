@@ -213,7 +213,7 @@ for (let i = 0; i < numParticles; i++) {
                 this.lifetime * Math.random(), //Lifetime. If there is no random, all the particle will spawn and die at the same time
                 this.speed, //Speed
                 this.acceleration, //Acceleration
-                new Vector3([1 - (2 * Math.random()), 1 - (2 *Math.random()), 1 - (2 * Math.random())]), //Direction
+                new Vector3([1 - (2 * Math.random()), 1 - (2 *Math.random()), 1 - (2 * Math.random())]).normalize(), //Direction
                 new THREE.Color(this.startColor), //StartColor
                 new THREE.Color(this.endColor) //EndColor
             );
