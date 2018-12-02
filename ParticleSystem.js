@@ -1,15 +1,17 @@
 // Set the scene size.
 const WIDTH = 600;
 const HEIGHT = 600;
-var positions, colors, direction;
+var positions, colors, direction, lifetimeArray;
 var bufferGeometry;
+var particleMesh;
+var lifeChange = 0.01;
 
 // Set some camera attributes.
 const VIEW_ANGLE = 45;
 const ASPECT = WIDTH / HEIGHT;
 const NEAR = 0.1;
 const FAR = 10000;
-const numParticles = 10000;
+const numParticles = 100;
 let minLifetime;
 let maxLifetime;
 let minSize;
@@ -100,30 +102,40 @@ const user = new THREE.Mesh(
 
     sphereMaterial);
 
-user.position.z = -300;
+user.position.z = -200;
 scene.add(user);
 
 
 function updateGeomData() {
     var vertices = new Float32Array([
         -1.0, -1.0, 1.0,
-        1.0, -1.0, 1.0,
-        1.0, 1.0, 1.0,
+        1.0, -1.0,  1.0,
+        1.0, 1.0,   1.0,
 
-        1.0, 1.0, 1.0,
-        -1.0, 1.0, 1.0,
+        1.0, 1.0,   1.0,
+        -1.0, 1.0,  1.0,
         -1.0, -1.0, 1.0
     ]);
-    vertices = vertices * 0.01;
-    let x = user.position.x + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
-    let y = user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
-    let z = user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
-    for (var i = 0; i < numParticles; i++) {
-        x = user.position.x + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
-        y = user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
-        z = user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
-        for (var j = 0; j < 18; j++){
-            positions[i * 18 + j] = positions[i * 18 + j] + speed * direction[3 * i + (j % 3)];
+    let userX = user.position.x;
+    let userY = user.position.y;
+    let userZ = user.position.z;
+
+    let particleCenterX = particleMesh.position.x;
+    let particleCenterY = particleMesh.position.y;
+    let particleCenterZ = particleMesh.position.z;
+    for (let i = 0; i < numParticles; i++) {
+        lifetimeArray[i] = lifetimeArray[i] - lifeChange;
+        if (lifetimeArray[i] < 0) {
+            for (let j = 0; j < 18; j = j + 3) {
+                positions[i * 18 + j + 0] = vertices[j + 0] - (particleCenterX - userX);
+                positions[i * 18 + j + 1] = vertices[j + 1] - (particleCenterY - userY);
+                positions[i * 18 + j + 2] = vertices[j + 2] - (particleCenterZ - userZ);
+            }
+            lifetimeArray[i] = lifetime;
+        } else {
+            for (let j = 0; j < 18; j++){
+                positions[i * 18 + j] = positions[i * 18 + j] + speed * direction[3 * i + (j % 3)];
+            }
         }
 
         colors[i * 3 + 0] = 1;
@@ -137,25 +149,30 @@ function main() {
         new THREE.PointsMaterial(
             {
                 color: new THREE.Color(0xFFFFFF)
-            });
+             });
 
     var vertices = new Float32Array([
         -1.0, -1.0, 1.0,
-        1.0, -1.0, 1.0,
-        1.0, 1.0, 1.0,
+        1.0, -1.0,  1.0,
+        1.0, 1.0,   1.0,
 
-        1.0, 1.0, 1.0,
-        -1.0, 1.0, 1.0,
+        1.0, 1.0,   1.0,
+        -1.0, 1.0,  1.0,
         -1.0, -1.0, 1.0
     ]);
     bufferGeometry = new THREE.BufferGeometry();
     bufferGeometry.dynamic = true;
+
     bufferGeometry.addAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices.length * numParticles), 3));
     bufferGeometry.addAttribute('color', new THREE.BufferAttribute(new Float32Array(3 * numParticles), 3));
     bufferGeometry.addAttribute('direction', new THREE.BufferAttribute(new Float32Array(3 * numParticles), 3));
+    bufferGeometry.addAttribute('lifetime' , new THREE.BufferAttribute(new Float32Array(numParticles), 1));
+
     positions = bufferGeometry.attributes.position.array;
     colors = bufferGeometry.attributes.color.array;
     direction = bufferGeometry.attributes.direction.array;
+    lifetimeArray = bufferGeometry.attributes.lifetime.array;
+
     for (let i = 0; i < positions.length; i++) {
         for (let j = 0; j < 18; j++) {
             positions[i * 18 + j] = vertices[j];
@@ -168,13 +185,17 @@ function main() {
         direction[i * 3 + 1] = tempVec.y;
         direction[i * 3 + 2] = tempVec.z;
     }
+    for (let i = 0; i < lifetimeArray.length; i++) {
+        lifetimeArray[i] = lifetime;
+    }
+    particleMesh = new THREE.Mesh(bufferGeometry, particleMaterial);
     updateGeomData();
-    let particleMesh = new THREE.Mesh(bufferGeometry, particleMaterial);
     particleMesh.position.set(
         user.position.x + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0),
         user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0),
         user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0)
     );
+    console.log(particleMesh.position.z);
     particleMesh.scale.setScalar(parseFloat(Math.random() * (maxSize - minSize)) + parseFloat(minSize));
     this.startColor = new THREE.Color(this.startColorR, this.startColorG, this.startColorB);
     this.endColor = new THREE.Color(this.endColorR, this.endColorG, this.endColorB);
@@ -193,7 +214,6 @@ function main() {
 }
 
 function update() {
-
     updateTextBoxes();
     renderer.render(scene, camera);
 
@@ -201,9 +221,9 @@ function update() {
     updateGeomData();
     bufferGeometry.attributes.position.needsUpdate = true;
     bufferGeometry.attributes.color.needsUpdate = true;
+    bufferGeometry.attributes.lifetime.needsUpdate = true;
     bufferGeometry.computeBoundingSphere();
     requestAnimationFrame(update);
-    renderer.render(scene, camera);
 }
 
 // Schedule the first frame.
