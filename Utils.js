@@ -49,6 +49,9 @@ function updateTextBoxes() {
     }
     maxSize = parseFloat(size) + parseFloat(sizeVariation / 2.0);
     speed = document.getElementById("speed").value;
+    speedVariation = document.getElementById("speedVariation").value;
+    minSpeed = speed - speedVariation / 2.0;
+    maxSpeed = parseFloat(speed) + parseFloat(speedVariation / 2.0);
     acceleration = document.getElementById("acceleration").value;
     this.startColor.setRGB(
         document.getElementById("startColorR").value,
