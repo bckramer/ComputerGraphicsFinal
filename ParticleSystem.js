@@ -139,13 +139,13 @@ function updateGeomData() {
             lifetimeArray[i] = lifetime - Math.random();
         } else {
             for (let j = 0; j < 18; j++){
-                positions[i * 18 + j] = positions[i * 18 + j] + speed * direction[3 * i + (j % 3)];
+                positions[i * 18 + j] = positions[i * 18 + j] + parseFloat(speed * direction[3 * i + (j % 3)]);
             }
         }
 
-        // colors[i * 3 + 0] = 1;
-        // colors[i * 3 + 1] = 1;
-        // colors[i * 3 + 2] = 1;
+        colors[i * 3 + 0] = 1;
+        colors[i * 3 + 1] = 1;
+        colors[i * 3 + 2] = 1;
     }
 }
 
