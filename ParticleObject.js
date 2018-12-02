@@ -5,25 +5,30 @@ const ParticleObject = function (mesh, lifetime, speed, acceleration, direction,
     this.mesh = mesh;
 
     // Total Lifetime of this object
-    this.lifetime = lifetime;
+    //this.lifetime = lifetime;
 
     // Lifetime left of this object
-    this.lifeLeft = lifetime;
+    //this.lifeLeft = lifetime;
 
     // Speed of object
-    this.speed = speed;
+    //this.speed = speed;
 
     // Acceleration of object
-    this.acceleration = acceleration;
+    //this.acceleration = acceleration;
 
     // Direction of object
-    this.direction = direction;
+    //this.direction = direction;
 
     // The color the particle spawns as (THREE.Color)
-    this.startColor = startColor;
+    //this.startColor = startColor;
 
     // The color the particle interpolates to throughout its lifetime
-    this.endColor = endColor;
+    //this.endColor = endColor;
+
+    // The color change in each update
+    // this.deltaR = parseFloat((endColor.r - startColor.r) / lifetime * lifeDecay);
+    // this.deltaG = parseFloat((endColor.g - startColor.g) / lifetime * lifeDecay);
+    // this.deltaB = parseFloat((endColor.b - startColor.b) / lifetime * lifeDecay);
 };
 
 ParticleObject.prototype.update = function(){
@@ -43,9 +48,9 @@ ParticleObject.prototype.updatePosition = function() {
 
 ParticleObject.prototype.updateColor = function() {
     this.mesh.material.color = new THREE.Color(
-        parseFloat(this.startColor.r) + parseFloat((this.lifetime - this.lifeLeft) / this.lifetime * (this.endColor.r - this.startColor.r)),
-        parseFloat(this.startColor.g) + parseFloat((this.lifetime - this.lifeLeft) / this.lifetime * (this.endColor.g - this.startColor.g)),
-        parseFloat(this.startColor.b) + parseFloat((this.lifetime - this.lifeLeft) / this.lifetime * (this.endColor.b - this.startColor.b))
+        parseFloat(this.mesh.material.color.r) + this.deltaR,
+        parseFloat(this.mesh.material.color.g) + this.deltaG,
+        parseFloat(this.mesh.material.color.b) + this.deltaB
     );
 };
 
@@ -64,6 +69,9 @@ ParticleObject.prototype.resetColor = function() {
 ParticleObject.prototype.swapColor = function(newStartColor, newEndColor) {
     this.startColor = newStartColor;
     this.endColor = newEndColor;
+    this.deltaR = parseFloat((newEndColor.r - newStartColor.r) / this.lifetime * lifeDecay);
+    this.deltaG = parseFloat((newEndColor.g - newStartColor.g) / this.lifetime * lifeDecay);
+    this.deltaB = parseFloat((newEndColor.b - newStartColor.b) / this.lifetime * lifeDecay);
 };
 
 ParticleObject.prototype.setPosition = function(x, y, z) {

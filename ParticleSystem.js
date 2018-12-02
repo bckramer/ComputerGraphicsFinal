@@ -16,6 +16,8 @@ let minLifetime;
 let maxLifetime;
 let minSize;
 let maxSize;
+let minSpeed;
+let maxSpeed;
 let startColor;
 let endColor;
 const objects = [];
@@ -37,6 +39,9 @@ if (size - sizeVariation / 2 < 0.001) {
 }
 maxSize = parseFloat(size) + parseFloat(sizeVariation / 2.0);
 var speed = document.getElementById("speed").value;
+var speedVariation = document.getElementById("speedVariation").value;
+minSpeed = speed - speedVariation / 2.0;
+maxSpeed = parseFloat(speed) + parseFloat(speedVariation / 2.0);
 var acceleration = document.getElementById("acceleration").value;
 var startColorR = document.getElementById("startColorR").value;
 var startColorG = document.getElementById("startColorG").value;
@@ -138,9 +143,9 @@ function updateGeomData() {
             }
         }
 
-        colors[i * 3 + 0] = 1;
-        colors[i * 3 + 1] = 1;
-        colors[i * 3 + 2] = 1;
+        // colors[i * 3 + 0] = 1;
+        // colors[i * 3 + 1] = 1;
+        // colors[i * 3 + 2] = 1;
     }
 }
 
@@ -160,6 +165,7 @@ function main() {
         -1.0, 1.0,  1.0,
         -1.0, -1.0, 1.0
     ]);
+
     bufferGeometry = new THREE.BufferGeometry();
     bufferGeometry.dynamic = true;
 
@@ -195,22 +201,23 @@ function main() {
         user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0),
         user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0)
     );
-    console.log(particleMesh.position.z);
+    particleMesh.material.color = new THREE.Color(0.5, 0.5, 0.5);
     particleMesh.scale.setScalar(parseFloat(Math.random() * (maxSize - minSize)) + parseFloat(minSize));
     this.startColor = new THREE.Color(this.startColorR, this.startColorG, this.startColorB);
     this.endColor = new THREE.Color(this.endColorR, this.endColorG, this.endColorB);
-    let particle =
-        new ParticleObject(
-            particleMesh, //Mesh
-            this.lifetime * Math.random(), //Lifetime. If there is no random, all the particle will spawn and die at the same time
-            this.speed, //Speed
-            this.acceleration, //Acceleration
-            new Vector3([1 - (2 * Math.random()), 1 - (2 * Math.random()), 1 - (2 * Math.random())]), //Direction
-            new THREE.Color(this.startColor), //StartColor
-            new THREE.Color(this.endColor) //EndColor
-        );
-    objects.push(particle);
-    scene.add(particle.mesh);
+    // let particle =
+    //     new ParticleObject(
+    //             particleMesh, //Mesh
+    //             lifetime * Math.random(), //Lifetime. If there is no random, all the particle will spawn and die at the same time
+    //             parseFloat(Math.random() * (maxSpeed - minSpeed)) + parseFloat(minSpeed), //Speed
+    //             acceleration, //Acceleration
+    //             new Vector3([1 - (2 * Math.random()), 1 - (2 *Math.random()), 1 - (2 * Math.random())]).normalize(), //Direction
+    //             new THREE.Color(this.startColor), //StartColor
+    //             new THREE.Color(this.endColor) //EndColor
+    //         );
+    //
+    // objects.push(particle);
+    scene.add(particleMesh);
 }
 
 function update() {
@@ -223,6 +230,27 @@ function update() {
     bufferGeometry.attributes.color.needsUpdate = true;
     bufferGeometry.attributes.lifetime.needsUpdate = true;
     bufferGeometry.computeBoundingSphere();
+
+    // for (let i = 0; i < objects.length; i++) {
+    //
+    //     particle = objects[i];
+    //
+    //     //    objects[i].position.x = Math.random() * 250 - 175;
+    //     if (particle.getLifeLeft() < 0) {
+    //         let spawnX = user.position.x + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
+    //         let spawnY = user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
+    //         let spawnZ = user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0);
+    //         particle.setPosition(spawnX, spawnY, spawnZ);
+    //         particle.setSize(parseFloat(Math.random() * (maxSize - minSize)) + parseFloat(minSize));
+    //         particle.setLifetime(parseFloat(Math.random() * (maxLifetime - minLifetime)) + parseFloat(minLifetime));
+    //         particle.resetColor();
+    //         particle.setSpeed(parseFloat(Math.random() * (maxSpeed - minSpeed)) + parseFloat(minSpeed));
+    //         particle.setAcceleration(this.acceleration);
+    //         particle.swapColor(this.startColor, this.endColor);
+    //     } else {
+    //         particle.update();
+    //     }
+    // }
     requestAnimationFrame(update);
 }
 
