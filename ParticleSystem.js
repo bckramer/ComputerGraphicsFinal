@@ -11,7 +11,7 @@ const VIEW_ANGLE = 45;
 const ASPECT = WIDTH / HEIGHT;
 const NEAR = 0.1;
 const FAR = 10000;
-const numParticles = 100;
+const numParticles = 100000;
 let minLifetime;
 let maxLifetime;
 let minSize;
@@ -127,11 +127,11 @@ function updateGeomData() {
         lifetimeArray[i] = lifetimeArray[i] - lifeChange;
         if (lifetimeArray[i] < 0) {
             for (let j = 0; j < 18; j = j + 3) {
-                positions[i * 18 + j + 0] = vertices[j + 0] - (particleCenterX - userX);
-                positions[i * 18 + j + 1] = vertices[j + 1] - (particleCenterY - userY);
-                positions[i * 18 + j + 2] = vertices[j + 2] - (particleCenterZ - userZ);
+                positions[i * 18 + j + 0] = vertices[j + 0] - ((particleCenterX - userX) / size);
+                positions[i * 18 + j + 1] = vertices[j + 1] - ((particleCenterY - userY) / size);
+                positions[i * 18 + j + 2] = vertices[j + 2] - ((particleCenterZ - userZ) / size);
             }
-            lifetimeArray[i] = lifetime;
+            lifetimeArray[i] = lifetime - Math.random();
         } else {
             for (let j = 0; j < 18; j++){
                 positions[i * 18 + j] = positions[i * 18 + j] + speed * direction[3 * i + (j % 3)];
