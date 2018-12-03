@@ -16,6 +16,8 @@ let minLifetime;
 let maxLifetime;
 let minSize;
 let maxSize;
+//let minSpeed;
+//let maxSpeed;
 let startColor;
 let endColor;
 const objects = [];
@@ -37,6 +39,9 @@ if (size - sizeVariation / 2 < 0.001) {
 }
 maxSize = parseFloat(size) + parseFloat(sizeVariation / 2.0);
 var speed = document.getElementById("speed").value;
+//var speedVariation = document.getElementById("speedVariation").value;
+//minSpeed = speed - speedVariation / 2.0;
+//maxSpeed = parseFloat(speed) + parseFloat(speedVariation / 2.0);
 var acceleration = document.getElementById("acceleration").value;
 var startColorR = document.getElementById("startColorR").value;
 var startColorG = document.getElementById("startColorG").value;
@@ -151,7 +156,7 @@ function updateGeomData() {
         } else {
             //let random = (1 - (2 * Math.random()));
             for (let j = 0; j < 18; j++){
-                positions[i * 18 + j] = positions[i * 18 + j] + speed * direction[3 * i + (j % 3)];
+                positions[i * 18 + j] = positions[i * 18 + j] + parseFloat(speed * direction[3 * i + (j % 3)]);
             }
         }
         for (let j = 0; j < 18; j = j + 3) {
