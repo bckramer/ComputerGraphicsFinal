@@ -114,11 +114,11 @@ scene.add(user);
 function updateGeomData() {
     var vertices = new Float32Array([
         -1.0, -1.0, 1.0,
-        1.0 , -1.0,  1.0,
-        1.0 , 1.0 ,   1.0,
+         1.0, -1.0, 1.0,
+         1.0,  1.0, 1.0,
 
-        1.0 , 1.0 ,   1.0,
-        -1.0, 1.0 ,  1.0,
+         1.0,  1.0, 1.0,
+        -1.0,  1.0, 1.0,
         -1.0, -1.0, 1.0
     ]);
     for (let k = 0; k < vertices.length; k++) {
@@ -145,7 +145,7 @@ function updateGeomData() {
     let deltaB = parseFloat((this.endColor.b - startb) / lifetime * lifeChange);
 
     for (let i = 0; i < numParticles; i++) {
-        lifetimeArray[i] = lifetimeArray[i] - lifeChange;
+        lifetimeArray[i] -= lifeChange;
         if (lifetimeArray[i] < 0) {
             for (let j = 0; j < 18; j = j + 3) {
                 positions[i * 18 + j    ] = vertices[j    ] - xAdjustment;
@@ -158,14 +158,15 @@ function updateGeomData() {
             lifetimeArray[i] = lifetime - Math.random();
         } else {
             for (let j = 0; j < 18; j++){
-                positions[i * 18 + j] = positions[i * 18 + j] + parseFloat(speed * direction[3 * i + (j % 3)]);
+                positions[i * 18 + j] += parseFloat(speed * direction[3 * i + (j % 3)]);
+            }
+            for (let j = 0; j < 18; j = j + 3) {
+                colors[i * 18 + j    ] += deltaR;
+                colors[i * 18 + j + 1] += deltaG;
+                colors[i * 18 + j + 2] += deltaB;
             }
         }
-        for (let j = 0; j < 18; j = j + 3) {
-            colors[i * 18 + j    ] += deltaR;
-            colors[i * 18 + j + 1] += deltaG;
-            colors[i * 18 + j + 2] += deltaB;
-        }
+
 
     }
 }
@@ -179,11 +180,11 @@ function main() {
 
     var vertices = new Float32Array([
         -1.0, -1.0, 1.0,
-        1.0 , -1.0,  1.0,
-        1.0 , 1.0 ,   1.0,
+         1.0, -1.0, 1.0,
+         1.0,  1.0, 1.0,
 
-        1.0 , 1.0 ,   1.0,
-        -1.0, 1.0 ,  1.0,
+         1.0,  1.0, 1.0,
+        -1.0,  1.0, 1.0,
         -1.0, -1.0, 1.0
     ]);
     for (let k = 0; k < vertices.length; k++) {
