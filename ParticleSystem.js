@@ -11,7 +11,7 @@ const VIEW_ANGLE = 45;
 const ASPECT = WIDTH / HEIGHT;
 const NEAR = 0.1;
 const FAR = 10000;
-const numParticles = 100000;
+const numParticles = 10000;
 let minLifetime;
 let maxLifetime;
 let minSize;
@@ -20,7 +20,6 @@ let minSpeed;
 let maxSpeed;
 let startColor;
 let endColor;
-const objects = [];
 
 var spawnDensity = document.getElementById("spawnDensity").value;
 var lifetime = document.getElementById("lifetime").value;
@@ -136,30 +135,49 @@ function updateGeomData() {
     let yAdjustment = (particleCenterY - userY);
     let zAdjustment = (particleCenterZ - userZ);
 
+    // Start colors
     let startr = parseFloat(this.startColor.r);
     let startg = parseFloat(this.startColor.g);
     let startb = parseFloat(this.startColor.b);
 
+    // Interpolated change in color between each "frame"
     let deltaR = parseFloat((this.endColor.r - startr) / lifetime * lifeChange);
     let deltaG = parseFloat((this.endColor.g - startg) / lifetime * lifeChange);
     let deltaB = parseFloat((this.endColor.b - startb) / lifetime * lifeChange);
 
     for (let i = 0; i < numParticles; i++) {
+        // Pass time
         lifetimeArray[i] -= lifeChange;
+
+        // If the particle's lifetime has ended
+        // Reset the particle (essentially deleting it and making a new particle)
         if (lifetimeArray[i] < 0) {
+            // Determine the variation in spawn location for the particle
+            let variation = new THREE.Vector3(
+                parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0),
+                parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0),
+                parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0)
+            );
+            // Set the new location based off of the users position and the spawn location variation
+            // Set the color to the current start color
             for (let j = 0; j < 18; j = j + 3) {
-                positions[i * 18 + j    ] = vertices[j    ] - xAdjustment;
-                positions[i * 18 + j + 1] = vertices[j + 1] - yAdjustment;
-                positions[i * 18 + j + 2] = vertices[j + 2] - zAdjustment;
+                positions[i * 18 + j    ] = vertices[j    ] - xAdjustment + variation.x;
+                positions[i * 18 + j + 1] = vertices[j + 1] - yAdjustment + variation.y;
+                positions[i * 18 + j + 2] = vertices[j + 2] - zAdjustment + variation.z;
                 colors[i * 18 + j    ] = startr;
                 colors[i * 18 + j + 1] = startg;
                 colors[i * 18 + j + 2] = startb;
             }
+            // Reset the lifetime (with minor variance to avoid waves)
             lifetimeArray[i] = lifetime - Math.random();
-        } else {
+        }
+        // If the particle's lifetime has not ended
+        else {
+            // Update the position based off of speed and direction
             for (let j = 0; j < 18; j++){
                 positions[i * 18 + j] += parseFloat(speed * direction[3 * i + (j % 3)]);
             }
+            // Update the color based off of the current start and end color interpolations
             for (let j = 0; j < 18; j = j + 3) {
                 colors[i * 18 + j    ] += deltaR;
                 colors[i * 18 + j + 1] += deltaG;
@@ -225,27 +243,24 @@ function main() {
     for (let i = 0; i < lifetimeArray.length; i++) {
         lifetimeArray[i] = lifetime - Math.random();
     }
-    particleMesh = new THREE.Mesh(bufferGeometry, particleMaterial);
+
+    // Instantiate start and end color
     this.startColor = new THREE.Color(this.startColorR, this.startColorG, this.startColorB);
     this.endColor = new THREE.Color(this.endColorR, this.endColorG, this.endColorB);
+
+    // Create particle mesh
+    particleMesh = new THREE.Mesh(bufferGeometry, particleMaterial);
+
     updateGeomData();
+
+    // Set position
     particleMesh.position.set(
-        user.position.x + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0),
-        user.position.y + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0),
-        user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0)
+        user.position.x,
+        user.position.y,
+        user.position.z
     );
-    //particleMesh.scale.setScalar(parseFloat(Math.random() * (maxSize - minSize)) + parseFloat(minSize));
-    // let particle =
-    //     new ParticleObject(
-    //         particleMesh, //Mesh
-    //         this.lifetime * Math.random(), //Lifetime. If there is no random, all the particle will spawn and die at the same time
-    //         this.speed, //Speed
-    //         this.acceleration, //Acceleration
-    //         new Vector3([1 - (2 * Math.random()), 1 - (2 * Math.random()), 1 - (2 * Math.random())]), //Direction
-    //         new THREE.Color(this.startColor), //StartColor
-    //         new THREE.Color(this.endColor) //EndColor
-    //     );
-    // objects.push(particle);
+
+    // Add particles to scene
     scene.add(particleMesh);
 }
 

@@ -32,7 +32,7 @@ function onDocumentKeyDown(event) {
 
 function updateTextBoxes() {
     spawnDensity = document.getElementById("spawnDensity").value; //TODO
-    lifetime = document.getElementById("lifetime").value;
+    lifetime = document.getElementById("lifetime").value; //TODO Optimize
     lifetimeVariation = document.getElementById("lifetimeVariation").value; //TODO
     minLifetime = lifetime - lifetimeVariation / 2.0;
     maxLifetime = parseFloat(lifetime) + parseFloat(lifetimeVariation / 2.0);
