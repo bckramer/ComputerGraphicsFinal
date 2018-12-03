@@ -16,8 +16,8 @@ let minLifetime;
 let maxLifetime;
 let minSize;
 let maxSize;
-//let minSpeed;
-//let maxSpeed;
+let minSpeed;
+let maxSpeed;
 let startColor;
 let endColor;
 const objects = [];
@@ -39,9 +39,9 @@ if (size - sizeVariation / 2 < 0.001) {
 }
 maxSize = parseFloat(size) + parseFloat(sizeVariation / 2.0);
 var speed = document.getElementById("speed").value;
-//var speedVariation = document.getElementById("speedVariation").value;
-//minSpeed = speed - speedVariation / 2.0;
-//maxSpeed = parseFloat(speed) + parseFloat(speedVariation / 2.0);
+var speedVariation = document.getElementById("speedVariation").value;
+minSpeed = speed - speedVariation / 2.0;
+maxSpeed = parseFloat(speed) + parseFloat(speedVariation / 2.0);
 var acceleration = document.getElementById("acceleration").value;
 var startColorR = document.getElementById("startColorR").value;
 var startColorG = document.getElementById("startColorG").value;
