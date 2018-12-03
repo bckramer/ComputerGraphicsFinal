@@ -5,30 +5,30 @@ const ParticleObject = function (mesh, lifetime, speed, acceleration, direction,
     this.mesh = mesh;
 
     // Total Lifetime of this object
-    //this.lifetime = lifetime;
+    this.lifetime = lifetime;
 
     // Lifetime left of this object
-    //this.lifeLeft = lifetime;
+    this.lifeLeft = lifetime;
 
     // Speed of object
-    //this.speed = speed;
+    this.speed = speed;
 
     // Acceleration of object
-    //this.acceleration = acceleration;
+    this.acceleration = acceleration;
 
     // Direction of object
-    //this.direction = direction;
+    this.direction = direction;
 
     // The color the particle spawns as (THREE.Color)
-    //this.startColor = startColor;
+    this.startColor = startColor;
 
     // The color the particle interpolates to throughout its lifetime
-    //this.endColor = endColor;
+    this.endColor = endColor;
 
     // The color change in each update
-    // this.deltaR = parseFloat((endColor.r - startColor.r) / lifetime * lifeDecay);
-    // this.deltaG = parseFloat((endColor.g - startColor.g) / lifetime * lifeDecay);
-    // this.deltaB = parseFloat((endColor.b - startColor.b) / lifetime * lifeDecay);
+    this.deltaR = parseFloat((endColor.r - startColor.r) / lifetime * lifeDecay);
+    this.deltaG = parseFloat((endColor.g - startColor.g) / lifetime * lifeDecay);
+    this.deltaB = parseFloat((endColor.b - startColor.b) / lifetime * lifeDecay);
 };
 
 ParticleObject.prototype.update = function(){

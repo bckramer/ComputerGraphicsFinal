@@ -140,9 +140,9 @@ function updateGeomData() {
     let startg = parseFloat(this.startColor.g);
     let startb = parseFloat(this.startColor.b);
 
-    let endr = parseFloat(this.endColor.r);
-    let endg = parseFloat(this.endColor.g);
-    let endb = parseFloat(this.endColor.b);
+    let deltaR = parseFloat((this.endColor.r - startr) / lifetime * lifeChange);
+    let deltaG = parseFloat((this.endColor.g - startg) / lifetime * lifeChange);
+    let deltaB = parseFloat((this.endColor.b - startb) / lifetime * lifeChange);
 
     for (let i = 0; i < numParticles; i++) {
         lifetimeArray[i] = lifetimeArray[i] - lifeChange;
@@ -151,18 +151,20 @@ function updateGeomData() {
                 positions[i * 18 + j    ] = vertices[j    ] - xAdjustment;
                 positions[i * 18 + j + 1] = vertices[j + 1] - yAdjustment;
                 positions[i * 18 + j + 2] = vertices[j + 2] - zAdjustment;
+                colors[i * 18 + j    ] = startr;
+                colors[i * 18 + j + 1] = startg;
+                colors[i * 18 + j + 2] = startb;
             }
             lifetimeArray[i] = lifetime - Math.random();
         } else {
-            //let random = (1 - (2 * Math.random()));
             for (let j = 0; j < 18; j++){
                 positions[i * 18 + j] = positions[i * 18 + j] + parseFloat(speed * direction[3 * i + (j % 3)]);
             }
         }
         for (let j = 0; j < 18; j = j + 3) {
-            colors[i * 18 + j    ] = endr + (((startr - endr) / (lifetime)) * (lifetimeArray[i]));
-            colors[i * 18 + j + 1] = endg + (((startg - endg) / (lifetime)) * (lifetimeArray[i]));
-            colors[i * 18 + j + 2] = endb + (((startb - endb) / (lifetime)) * (lifetimeArray[i]));
+            colors[i * 18 + j    ] += deltaR;
+            colors[i * 18 + j + 1] += deltaG;
+            colors[i * 18 + j + 2] += deltaB;
         }
 
     }
@@ -207,7 +209,7 @@ function main() {
     }
     for (let i = 0; i < colors.length; i++) {
         for (let j = 0; j < 18; j = j + 3) {
-            colors[i * 18 + j + 0] = startColorR;
+            colors[i * 18 + j    ] = startColorR;
             colors[i * 18 + j + 1] = startColorG;
             colors[i * 18 + j + 2] = startColorB;
         }
@@ -215,7 +217,7 @@ function main() {
     for (let i = 0; i < direction.length / 3; i++) {
         let tempVec = new THREE.Vector3(1 - (2 * Math.random()), 1 - (2 * Math.random()), 1 - (2 * Math.random()));
         tempVec.normalize();
-        direction[i * 3 + 0] = tempVec.x;
+        direction[i * 3    ] = tempVec.x;
         direction[i * 3 + 1] = tempVec.y;
         direction[i * 3 + 2] = tempVec.z;
     }
