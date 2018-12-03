@@ -145,13 +145,16 @@ function updateGeomData() {
     let deltaG = parseFloat((this.endColor.g - startg) / lifetime * lifeChange);
     let deltaB = parseFloat((this.endColor.b - startb) / lifetime * lifeChange);
 
+    // For each particle
     for (let i = 0; i < numParticles; i++) {
+
         // Pass time
         lifetimeArray[i] -= lifeChange;
 
         // If the particle's lifetime has ended
         // Reset the particle (essentially deleting it and making a new particle)
         if (lifetimeArray[i] < 0) {
+
             // Determine the variation in spawn location for the particle
             let variation = new THREE.Vector3(
                 parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0),
