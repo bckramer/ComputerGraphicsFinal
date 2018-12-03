@@ -148,7 +148,7 @@ function updateGeomData() {
         lifetimeArray[i] = lifetimeArray[i] - lifeChange;
         if (lifetimeArray[i] < 0) {
             for (let j = 0; j < 18; j = j + 3) {
-                positions[i * 18 + j + 0] = vertices[j + 0] - xAdjustment;
+                positions[i * 18 + j    ] = vertices[j    ] - xAdjustment;
                 positions[i * 18 + j + 1] = vertices[j + 1] - yAdjustment;
                 positions[i * 18 + j + 2] = vertices[j + 2] - zAdjustment;
             }
@@ -160,7 +160,7 @@ function updateGeomData() {
             }
         }
         for (let j = 0; j < 18; j = j + 3) {
-            colors[i * 18 + j + 0] = endr + (((startr - endr) / (lifetime)) * (lifetimeArray[i]));
+            colors[i * 18 + j    ] = endr + (((startr - endr) / (lifetime)) * (lifetimeArray[i]));
             colors[i * 18 + j + 1] = endg + (((startg - endg) / (lifetime)) * (lifetimeArray[i]));
             colors[i * 18 + j + 2] = endb + (((startb - endb) / (lifetime)) * (lifetimeArray[i]));
         }
@@ -232,25 +232,24 @@ function main() {
         user.position.z + parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0)
     );
     //particleMesh.scale.setScalar(parseFloat(Math.random() * (maxSize - minSize)) + parseFloat(minSize));
-    let particle =
-        new ParticleObject(
-            particleMesh, //Mesh
-            this.lifetime * Math.random(), //Lifetime. If there is no random, all the particle will spawn and die at the same time
-            this.speed, //Speed
-            this.acceleration, //Acceleration
-            new Vector3([1 - (2 * Math.random()), 1 - (2 * Math.random()), 1 - (2 * Math.random())]), //Direction
-            new THREE.Color(this.startColor), //StartColor
-            new THREE.Color(this.endColor) //EndColor
-        );
-    objects.push(particle);
-    scene.add(particle.mesh);
+    // let particle =
+    //     new ParticleObject(
+    //         particleMesh, //Mesh
+    //         this.lifetime * Math.random(), //Lifetime. If there is no random, all the particle will spawn and die at the same time
+    //         this.speed, //Speed
+    //         this.acceleration, //Acceleration
+    //         new Vector3([1 - (2 * Math.random()), 1 - (2 * Math.random()), 1 - (2 * Math.random())]), //Direction
+    //         new THREE.Color(this.startColor), //StartColor
+    //         new THREE.Color(this.endColor) //EndColor
+    //     );
+    // objects.push(particle);
+    scene.add(particleMesh);
 }
 
 function update() {
     updateTextBoxes();
     renderer.render(scene, camera);
 
-    let particle;
     updateGeomData();
     bufferGeometry.attributes.position.needsUpdate = true;
     bufferGeometry.attributes.color.needsUpdate = true;
