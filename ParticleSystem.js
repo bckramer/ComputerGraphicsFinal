@@ -205,6 +205,10 @@ function updateGeomData() {
                 colors[i * 18 + j + 1] += deltaG;
                 colors[i * 18 + j + 2] += deltaB;
             }
+            // Apply acceleration to the speed of the particle
+            for (let j = 0; j < 3; j++){
+                direction[i * 3 + j] *= acceleration;
+            }
         }
 
 

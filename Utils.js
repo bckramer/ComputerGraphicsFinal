@@ -32,7 +32,7 @@ function onDocumentKeyDown(event) {
 
 function updateTextBoxes() {
     spawnDensity = document.getElementById("spawnDensity").value;
-    lifetime = document.getElementById("lifetime").value; //TODO Optimize
+    lifetime = document.getElementById("lifetime").value;
     lifetimeVariation = document.getElementById("lifetimeVariation").value;
     minLifetime = lifetime - lifetimeVariation / 2.0;
     maxLifetime = parseFloat(lifetime) + parseFloat(lifetimeVariation / 2.0);
@@ -48,11 +48,11 @@ function updateTextBoxes() {
         minSize = size - sizeVariation / 2.0;
     }
     maxSize = parseFloat(size) + parseFloat(sizeVariation / 2.0);
-    speed = document.getElementById("speed").value; //TODO Optimize
-    speedVariation = document.getElementById("speedVariation").value; //TODO
+    speed = document.getElementById("speed").value;
+    speedVariation = document.getElementById("speedVariation").value;
     minSpeed = speed - speedVariation / 2.0;
     maxSpeed = parseFloat(speed) + parseFloat(speedVariation / 2.0);
-    acceleration = document.getElementById("acceleration").value; //TODO
+    acceleration = document.getElementById("acceleration").value;
     this.startColor.setRGB(
         document.getElementById("startColorR").value,
         document.getElementById("startColorG").value,
