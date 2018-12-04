@@ -63,7 +63,6 @@ const camera =
         NEAR,
         FAR
     );
-
 const scene = new THREE.Scene();
 
 // Add the camera to the scene.
@@ -148,6 +147,9 @@ function updateGeomData() {
     let deltaG = parseFloat((this.endColor.g - startg) / lifetime * lifeChange);
     let deltaB = parseFloat((this.endColor.b - startb) / lifetime * lifeChange);
 
+    let parsedMaxSpeed = parseFloat(maxSpeed);
+    let parsedMinSpeed = parseFloat(minSpeed);
+
     // For each particle
     for (let i = 0; i < numParticles; i++) {
 
@@ -183,9 +185,9 @@ function updateGeomData() {
             ).normalize();
 
             // Determine speed for the particle
-            direction[i * 3    ] = particleDirection.x * ((Math.random() * (maxSpeed - minSpeed)) + minSpeed);
-            direction[i * 3 + 1] = particleDirection.y * ((Math.random() * (maxSpeed - minSpeed)) + minSpeed);
-            direction[i * 3 + 2] = particleDirection.z * ((Math.random() * (maxSpeed - minSpeed)) + minSpeed);
+            direction[i * 3    ] = particleDirection.x * ((Math.random() * (parsedMaxSpeed - parsedMinSpeed)) + parsedMinSpeed);
+            direction[i * 3 + 1] = particleDirection.y * ((Math.random() * (parsedMaxSpeed - parsedMinSpeed)) + parsedMinSpeed);
+            direction[i * 3 + 2] = particleDirection.z * ((Math.random() * (parsedMaxSpeed - parsedMinSpeed)) + parsedMinSpeed);
 
             // Reset the lifetime (with minor variance to avoid waves)
             lifetimeArray[i] = lifetime - (lifetimeVariation * Math.random());
