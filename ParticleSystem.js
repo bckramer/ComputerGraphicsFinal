@@ -11,7 +11,7 @@ const VIEW_ANGLE = 45;
 const ASPECT = WIDTH / HEIGHT;
 const NEAR = 0.1;
 const FAR = 10000;
-const numParticles = 100;
+const numParticles = 10000;
 let minLifetime;
 let maxLifetime;
 let minSize;
@@ -160,10 +160,11 @@ function updateGeomData() {
 
             // Determine the variation in spawn location for the particle
             let variation = new THREE.Vector3(
-                parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0),
-                parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0),
-                parseFloat(Math.random() * spawnDensity - spawnDensity / 2.0)
+                Math.random() * spawnDensity - spawnDensity / 2.0,
+                Math.random() * spawnDensity - spawnDensity / 2.0,
+                Math.random() * spawnDensity - spawnDensity / 2.0
             );
+
             // Set the new location based off of the users position and the spawn location variation
             // Set the color to the current start color
             for (let j = 0; j < 18; j = j + 3) {
@@ -174,6 +175,18 @@ function updateGeomData() {
                 colors[i * 18 + j + 1] = startg;
                 colors[i * 18 + j + 2] = startb;
             }
+
+            let particleDirection = new THREE.Vector3(
+                1 - (2 * Math.random()),
+                1 - (2 * Math.random()),
+                1 - (2 * Math.random())
+            ).normalize();
+
+            // Determine speed for the particle
+            direction[i * 3    ] = particleDirection.x * ((Math.random() * (maxSpeed - minSpeed)) + minSpeed);
+            direction[i * 3 + 1] = particleDirection.y * ((Math.random() * (maxSpeed - minSpeed)) + minSpeed);
+            direction[i * 3 + 2] = particleDirection.z * ((Math.random() * (maxSpeed - minSpeed)) + minSpeed);
+
             // Reset the lifetime (with minor variance to avoid waves)
             lifetimeArray[i] = lifetime - (lifetimeVariation * Math.random());
         }
@@ -181,7 +194,7 @@ function updateGeomData() {
         else {
             // Update the position based off of speed and direction
             for (let j = 0; j < 18; j++){
-                positions[i * 18 + j] += parseFloat(speed * direction[3 * i + (j % 3)]);
+                positions[i * 18 + j] += direction[i * 3 + (j % 3)];
             }
             // Update the color based off of the current start and end color interpolations
             for (let j = 0; j < 18; j = j + 3) {
