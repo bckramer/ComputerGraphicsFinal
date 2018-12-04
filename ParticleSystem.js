@@ -23,7 +23,7 @@ let endColor;
 
 var spawnDensity = document.getElementById("spawnDensity").value;
 var lifetime = document.getElementById("lifetime").value;
-var lifetimeVariation = document.getElementById("lifetimeVariation").value;
+var lifetimeVariation = parseFloat(document.getElementById("lifetimeVariation").value);
 minLifetime = lifetime - lifetimeVariation / 2.0;
 maxLifetime = parseFloat(lifetime) + parseFloat(lifetimeVariation / 2.0);
 var size = document.getElementById("size").value;
@@ -106,7 +106,7 @@ const user = new THREE.Mesh(
 
     sphereMaterial);
 
-user.position.z = -200;
+user.position.z = -800;
 scene.add(user);
 
 
@@ -173,7 +173,7 @@ function updateGeomData() {
                 colors[i * 18 + j + 2] = startb;
             }
             // Reset the lifetime (with minor variance to avoid waves)
-            lifetimeArray[i] = lifetime - Math.random();
+            lifetimeArray[i] = lifetime - (lifetimeVariation * Math.random());
         }
         // If the particle's lifetime has not ended
         else {
@@ -245,7 +245,7 @@ function main() {
         direction[i * 3 + 2] = tempVec.z;
     }
     for (let i = 0; i < lifetimeArray.length; i++) {
-        lifetimeArray[i] = lifetime - Math.random();
+        lifetimeArray[i] = lifetime - (lifetimeVariation * Math.random());
     }
 
     // Instantiate start and end color
