@@ -11,7 +11,7 @@ const VIEW_ANGLE = 45;
 const ASPECT = WIDTH / HEIGHT;
 const NEAR = 0.1;
 const FAR = 10000;
-const numParticles = 100;
+const numParticles = 100000;
 let minLifetime;
 let maxLifetime;
 let minSize;
@@ -122,7 +122,7 @@ function updateGeomData() {
     ]);
     let random = Math.random();
     for (let k = 0; k < vertices.length; k++) {
-        vertices[k] = vertices[k] * (size - sizeVariation * random);
+        vertices[k] = vertices[k] * (size - (sizeVariation * random));
     }
     let userX = user.position.x;
     let userY = user.position.y;
@@ -145,6 +145,9 @@ function updateGeomData() {
     let deltaR = parseFloat((this.endColor.r - startr) / lifetime * lifeChange);
     let deltaG = parseFloat((this.endColor.g - startg) / lifetime * lifeChange);
     let deltaB = parseFloat((this.endColor.b - startb) / lifetime * lifeChange);
+
+    let parsedLifetime = parseFloat(lifetime);
+    let parsedSpeed = parseFloat(speed);
 
     // For each particle
     for (let i = 0; i < numParticles; i++) {
@@ -179,7 +182,7 @@ function updateGeomData() {
         else {
             // Update the position based off of speed and direction
             for (let j = 0; j < 18; j++){
-                positions[i * 18 + j] += parseFloat(speed * direction[3 * i + (j % 3)]);
+                positions[i * 18 + j] += parsedSpeed * direction[3 * i + (j % 3)];
             }
             // Update the color based off of the current start and end color interpolations
             for (let j = 0; j < 18; j = j + 3) {
