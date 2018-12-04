@@ -11,7 +11,7 @@ const VIEW_ANGLE = 45;
 const ASPECT = WIDTH / HEIGHT;
 const NEAR = 0.1;
 const FAR = 10000;
-const numParticles = 10000;
+const numParticles = 100;
 let minLifetime;
 let maxLifetime;
 let minSize;
@@ -30,7 +30,7 @@ var size = document.getElementById("size").value;
 if (size < 0.001) {
     size = 0.001;
 }
-var sizeVariation = document.getElementById("sizeVariation").value;
+var sizeVariation = parseFloat(document.getElementById("sizeVariation").value);
 if (size - sizeVariation / 2 < 0.001) {
     minSize = 0.001;
 } else {
@@ -106,7 +106,7 @@ const user = new THREE.Mesh(
 
     sphereMaterial);
 
-user.position.z = -800;
+user.position.z = -200;
 scene.add(user);
 
 
@@ -120,8 +120,9 @@ function updateGeomData() {
         -1.0,  1.0, 1.0,
         -1.0, -1.0, 1.0
     ]);
+    let random = Math.random();
     for (let k = 0; k < vertices.length; k++) {
-        vertices[k] = vertices[k] * size;
+        vertices[k] = vertices[k] * (size - sizeVariation * random);
     }
     let userX = user.position.x;
     let userY = user.position.y;
@@ -209,7 +210,7 @@ function main() {
         -1.0, -1.0, 1.0
     ]);
     for (let k = 0; k < vertices.length; k++) {
-        vertices[k] = vertices[k] * size;
+        vertices[k] = vertices[k] * (size - (sizeVariation * Math.random()));
     }
     bufferGeometry = new THREE.BufferGeometry();
     bufferGeometry.dynamic = true;
