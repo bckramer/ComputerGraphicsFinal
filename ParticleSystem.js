@@ -120,10 +120,12 @@ function updateGeomData() {
         -1.0,  1.0, 1.0,
         -1.0, -1.0, 1.0
     ]);
+
     let random = Math.random();
     for (let k = 0; k < vertices.length; k++) {
         vertices[k] = vertices[k] * (size - (sizeVariation * random));
     }
+
     let userX = user.position.x;
     let userY = user.position.y;
     let userZ = user.position.z;
