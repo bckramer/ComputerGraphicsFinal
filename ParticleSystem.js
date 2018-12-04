@@ -11,7 +11,7 @@ const VIEW_ANGLE = 45;
 const ASPECT = WIDTH / HEIGHT;
 const NEAR = 0.1;
 const FAR = 10000;
-const numParticles = 10000;
+const numParticles = 100;
 let minLifetime;
 let maxLifetime;
 let minSize;
@@ -23,14 +23,14 @@ let endColor;
 
 var spawnDensity = document.getElementById("spawnDensity").value;
 var lifetime = document.getElementById("lifetime").value;
-var lifetimeVariation = document.getElementById("lifetimeVariation").value;
+var lifetimeVariation = parseFloat(document.getElementById("lifetimeVariation").value);
 minLifetime = lifetime - lifetimeVariation / 2.0;
 maxLifetime = parseFloat(lifetime) + parseFloat(lifetimeVariation / 2.0);
 var size = document.getElementById("size").value;
 if (size < 0.001) {
     size = 0.001;
 }
-var sizeVariation = document.getElementById("sizeVariation").value;
+var sizeVariation = parseFloat(document.getElementById("sizeVariation").value);
 if (size - sizeVariation / 2 < 0.001) {
     minSize = 0.001;
 } else {
@@ -121,8 +121,9 @@ function updateGeomData() {
         -1.0, -1.0, 1.0
     ]);
 
+    let random = Math.random();
     for (let k = 0; k < vertices.length; k++) {
-        vertices[k] = vertices[k] * size;
+        vertices[k] = vertices[k] * (size - sizeVariation * random);
     }
 
     let userX = user.position.x;
@@ -174,7 +175,7 @@ function updateGeomData() {
                 colors[i * 18 + j + 2] = startb;
             }
             // Reset the lifetime (with minor variance to avoid waves)
-            lifetimeArray[i] = lifetime - Math.random();
+            lifetimeArray[i] = lifetime - (lifetimeVariation * Math.random());
         }
         // If the particle's lifetime has not ended
         else {
@@ -211,7 +212,7 @@ function main() {
         -1.0, -1.0, 1.0
     ]);
     for (let k = 0; k < vertices.length; k++) {
-        vertices[k] = vertices[k] * size;
+        vertices[k] = vertices[k] * (size - (sizeVariation * Math.random()));
     }
     bufferGeometry = new THREE.BufferGeometry();
     bufferGeometry.dynamic = true;
@@ -246,7 +247,7 @@ function main() {
         direction[i * 3 + 2] = tempVec.z;
     }
     for (let i = 0; i < lifetimeArray.length; i++) {
-        lifetimeArray[i] = lifetime - Math.random();
+        lifetimeArray[i] = lifetime - (lifetimeVariation * Math.random());
     }
 
     // Instantiate start and end color
