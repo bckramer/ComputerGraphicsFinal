@@ -120,9 +120,11 @@ function updateGeomData() {
         -1.0,  1.0, 1.0,
         -1.0, -1.0, 1.0
     ]);
+
     for (let k = 0; k < vertices.length; k++) {
         vertices[k] = vertices[k] * size;
     }
+
     let userX = user.position.x;
     let userY = user.position.y;
     let userZ = user.position.z;

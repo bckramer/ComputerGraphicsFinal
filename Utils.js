@@ -31,9 +31,9 @@ function onDocumentKeyDown(event) {
 }
 
 function updateTextBoxes() {
-    spawnDensity = document.getElementById("spawnDensity").value; //TODO
+    spawnDensity = document.getElementById("spawnDensity").value;
     lifetime = document.getElementById("lifetime").value; //TODO Optimize
-    lifetimeVariation = document.getElementById("lifetimeVariation").value; //TODO
+    lifetimeVariation = document.getElementById("lifetimeVariation").value;
     minLifetime = lifetime - lifetimeVariation / 2.0;
     maxLifetime = parseFloat(lifetime) + parseFloat(lifetimeVariation / 2.0);
 
@@ -41,7 +41,7 @@ function updateTextBoxes() {
     if (size < 0.001) {
         size = 0.001;
     }
-    sizeVariation = document.getElementById("sizeVariation").value; //TODO
+    sizeVariation = document.getElementById("sizeVariation").value;
     if (size - sizeVariation / 2.0 < 0.001) {
         minSize = 0.001;
     } else {
