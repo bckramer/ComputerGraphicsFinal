@@ -123,7 +123,7 @@ function updateGeomData() {
 
     let random = Math.random();
     for (let k = 0; k < vertices.length; k++) {
-        vertices[k] = vertices[k] * (size - sizeVariation * random);
+        vertices[k] = vertices[k] * (size - (sizeVariation * random));
     }
 
     let userX = user.position.x;
@@ -147,6 +147,9 @@ function updateGeomData() {
     let deltaR = parseFloat((this.endColor.r - startr) / lifetime * lifeChange);
     let deltaG = parseFloat((this.endColor.g - startg) / lifetime * lifeChange);
     let deltaB = parseFloat((this.endColor.b - startb) / lifetime * lifeChange);
+
+    let parsedLifetime = parseFloat(lifetime);
+    let parsedSpeed = parseFloat(speed);
 
     // For each particle
     for (let i = 0; i < numParticles; i++) {
